@@ -35,6 +35,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
+const contactNote = document.querySelector('.contact-note');
 
 if (contactForm && formStatus) {
   contactForm.addEventListener('submit', (event) => {
@@ -46,13 +47,49 @@ if (contactForm && formStatus) {
     const message = contactForm.querySelector('textarea[name="message"]').value.trim();
 
     if (!name || !email || !subject || !message) {
-      formStatus.textContent = 'Fill every field before sending.';
+      formStatus.textContent = 'Fill in all fields before sending.';
+      formStatus.classList.add('error');
       return;
     }
 
-    formStatus.textContent = 'Message queued. 0708 will respond soon.';
-    contactForm.reset();
+    const mailto = `mailto:contact@0708.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\n${message}`
+    )}`;
+
+    formStatus.textContent = 'Opening email client...';
+    formStatus.classList.remove('error');
+    formStatus.classList.add('success');
+
+    window.location.href = mailto;
+
+    setTimeout(() => {
+      contactForm.reset();
+    }, 500);
   });
+}
+
+const showData = [];
+const showList = document.getElementById('showList');
+const showEmpty = document.getElementById('showEmpty');
+
+if (showList && showEmpty) {
+  if (showData.length > 0) {
+    showEmpty.style.display = 'none';
+    showData.forEach((show) => {
+      const card = document.createElement('article');
+      card.className = 'show-card';
+      card.innerHTML = `
+        <p class="status">${show.status || ''}</p>
+        <h3>${show.venue}</h3>
+        <p>${show.city}</p>
+        <p>${show.date}</p>
+        ${show.ticketUrl ? `<a href="${show.ticketUrl}" target="_blank" rel="noopener noreferrer">Ticket link</a>` : ''}
+      `;
+      showList.appendChild(card);
+    });
+  } else {
+    showList.style.display = 'none';
+  }
 }
 
 // Spotify embed lazy-load and overlay handling
@@ -63,6 +100,11 @@ if (contactForm && formStatus) {
   const openBtn = document.getElementById('openSpotify');
 
   if (!iframe || !overlay) return;
+
+  const loader = document.createElement('span');
+  loader.className = 'spotify-loader';
+  loader.innerText = 'Loading...';
+  overlay.querySelector('.overlay-inner')?.appendChild(loader);
 
   let srcSet = false;
 
@@ -91,6 +133,7 @@ if (contactForm && formStatus) {
     // fallback: hide overlay after 3s even if load doesn't fire
     setTimeout(() => {
       hideOverlay();
+      loader.innerText = 'Player loaded';
     }, 3000);
   }
 

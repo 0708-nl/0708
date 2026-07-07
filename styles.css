@@ -484,21 +484,20 @@ h1 {
     gap: 2rem;
   }
 
-  .track-grid {
+  .track-grid,
+  .show-grid,
+  .download-grid,
+  .problem-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
-  .problems .problem-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .show-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .download-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(188, 255, 61, 0.8);
+  outline-offset: 2px;
 }
 
 @media (min-width: 1024px) {
