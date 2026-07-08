@@ -1,15 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>0708 Bio | Hard Techno & Hardcore Artist</title>
+    <title>0708 | Over Mij</title>
     <meta
       name="description"
-      content="Read the official bio of 0708, an underground hard techno and hardcore artist known for raw kicks, intense live sets, and uncompromising energy."
+      content="Over Mij pagina van 0708 met persoonlijke bio, interesses en een rustige, volwassen stijl."
     />
     <meta
       name="keywords"
+      content="0708, over mij, bio, fine dining, chef, rustig, introvert, zelfontwikkeling"
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://0708.nl/bio/" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="../" aria-label="0708 home">0708</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="../">Home</a>
+        <a href="./" aria-current="page">Bio</a>
+        <a href="../hard-techno-artist/">Hard Techno</a>
+      </nav>
+    </header>
+
     <main>
       <section class="section reveal about-section" id="about">
         <div class="section-heading">
@@ -18,18 +36,9 @@
         </div>
 
         <div class="about-grid">
-          <div class="about-profile" aria-hidden="false">
+          <div class="about-profile">
             <div class="profile-photo">
-              <img src="/bio/profile.jpg"
-                   srcset="/bio/profile-400.jpg 400w, /bio/profile-800.jpg 800w, /bio/profile-1200.jpg 1200w"
-                   sizes="(max-width:600px) 60vw, 220px"
-                   alt="Profielfoto"
-                   class="profile-img"
-                   loading="lazy"
-                   decoding="async"
-                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-
-              <div class="profile-svg-fallback" aria-hidden="true" style="display:none;">
+              <div class="profile-svg-fallback" aria-hidden="true">
                 <svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
                   <rect width="100%" height="100%" rx="18" fill="#0a0a0a" />
                   <g fill="#222">
@@ -42,7 +51,14 @@
           </div>
 
           <div class="about-content">
-            <div id="generated-bio" class="about-text" aria-live="polite"></div>
+            <div class="bio-theme">Thema: Minimalistisch donker — Fine dining</div>
+            <div class="about-text generated-bio-body">
+              <p>Ik ben van nature een rustig en introvert persoon; ik houd veel voor mezelf en spreek liever spaarzaam. In gesprekken observeer ik, denk ik na en laat ik mijn werk vaak het meeste zeggen.</p>
+              <p>Rust, eerlijkheid en loyaliteit zijn voor mij belangrijke waarden: ze bepalen hoe ik omga met mensen en met mijn vak.</p>
+              <p>In mijn leven heb ik moeilijke ervaringen en trauma's meegemaakt. Ik behandel die herinneringen met zorg en subtiliteit: ze hebben invloed gehad en mij gevormd, maar ze bepalen niet wie ik in wezen ben. Die houding zie je terug in mijn manier van werken — bedachtzaam en zonder dramatiek.</p>
+              <p>Koken is mijn grote passie. In de wereld van fine dining werk ik met aandacht voor detail, kwaliteit en presentatie. Voor mij is koken een manier van creatieve expressie: ik experimenteer met technieken en smaken en zoek naar zuivere, doordachte oplossingen op het bord. Gastvrijheid en respect voor ingrediënten staan altijd centraal.</p>
+              <p>Ik blijf mezelf ontwikkelen door nieuwe technieken en smaken te verkennen, en door discipline en precisie in elk gerecht te leggen. Mijn manier van werken is oprecht en volwassen: ingetogen in woorden, toegewijd in uitvoering. Die combinatie van rust, vakmanschap en nieuwsgierigheid is wat mij drijft.</p>
+            </div>
 
             <div class="interests" aria-labelledby="interests-heading">
               <h2 id="interests-heading">Interesses</h2>
@@ -77,35 +93,5 @@
         </div>
       </section>
     </main>
-    <script src="/about-me.js" defer></script>
-    </header>
-
-    <main>
-      <section class="section reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Biography</p>
-          <h1>About 0708</h1>
-        </div>
-        <p class="about-text">
-          0708 is an underground hard techno and hardcore artist focused on raw energy, heavy percussion, and uncompromising sound. Rooted in late-night intensity and dark-room atmosphere, the project brings together distorted basslines, aggressive drums, and a direct, physical approach that stands out in the modern electronic music scene.
-        </p>
-        <p class="about-text">
-          The sound of 0708 is built for high-pressure sets, intense club environments, and audiences looking for something direct, powerful, and unmistakably underground. Whether delivering a fierce live set or crafting new material, 0708 stays true to a bold, relentless identity.
-        </p>
-        <section class="section">
-          <div class="section-heading">
-            <p class="eyebrow">Music</p>
-            <h2>Selected Tracks</h2>
-          </div>
-          <div class="spotify-grid">
-            <!-- Replace data attributes with real `data-track-id` or `data-artist` + `data-title` -->
-            <div class="spotify-track" data-artist="0708" data-title="Track Name"></div>
-            <div class="spotify-track" data-artist="Artist Name" data-title="Track Title"></div>
-            <div class="spotify-track" data-track-id=""></div>
-          </div>
-        </section>
-      </section>
-    </main>
-    <script src="/spotify.js" defer></script>
   </body>
 </html>
