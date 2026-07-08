@@ -1,6 +1,6 @@
 /* about-me.js
-   Genereert automatisch een persoonlijke bio op basis van vooraf gedefinieerde eigenschappen.
-   De tekst gebruikt uitsluitend de opgegeven kenmerken en voegt geen extra persoonlijke details toe.
+   Generates a personal bio automatically based on predefined traits.
+   The text uses only the provided facts and does not add extra personal details.
 */
 
 (function () {
@@ -38,13 +38,13 @@
   }
 
   function generateBio(p) {
-    // Return an array of paragraphs (deterministic, Dutch, based only on provided facts).
+    // Return an array of paragraphs (deterministic, English, based only on provided facts).
     return [
-      "Ik ben van nature een rustig en introvert persoon; ik houd veel voor mezelf en spreek liever spaarzaam. In gesprekken observeer ik, denk ik na en laat ik mijn werk vaak het meeste zeggen.",
-      "Rust, eerlijkheid en loyaliteit zijn voor mij belangrijke waarden: ze bepalen hoe ik omga met mensen en met mijn vak.",
-      "In mijn leven heb ik moeilijke ervaringen en trauma's meegemaakt. Ik behandel die herinneringen met zorg en subtiliteit: ze hebben invloed gehad en mij gevormd, maar ze bepalen niet wie ik in wezen ben. Die houding zie je terug in mijn manier van werken — bedachtzaam en zonder dramatiek.",
-      "Koken is mijn grote passie. In de wereld van fine dining werk ik met aandacht voor detail, kwaliteit en presentatie. Voor mij is koken een manier van creatieve expressie: ik experimenteer met technieken en smaken en zoek naar zuivere, doordachte oplossingen op het bord. Gastvrijheid en respect voor ingrediënten staan altijd centraal.",
-      "Ik blijf mezelf ontwikkelen door nieuwe technieken en smaken te verkennen, en door discipline en precisie in elk gerecht te leggen. Mijn manier van werken is oprecht en volwassen: ingetogen in woorden, toegewijd in uitvoering. Die combinatie van rust, vakmanschap en nieuwsgierigheid is wat mij drijft."
+      "I am naturally calm and introverted; I keep a lot to myself and prefer to speak sparingly. In conversations I observe, I think carefully, and I let my work often speak the loudest.",
+      "Calmness, honesty and loyalty are important values to me: they shape how I interact with people and how I approach my craft.",
+      "I have experienced difficult events and trauma in my life. I treat those memories with care and subtlety: they have influenced me and shaped me, but they do not define who I am at my core. That attitude shows in the way I work — thoughtful and without drama.",
+      "Cooking is my greatest passion. In the world of fine dining I work with attention to detail, quality and presentation. For me, cooking is a form of creative expression: I experiment with techniques and flavors and seek clean, thoughtful solutions on the plate. Hospitality and respect for ingredients are always central.",
+      "I continue to develop myself by exploring new techniques and flavors, and by applying discipline and precision to every dish. My way of working is honest and mature: restrained in words, dedicated in execution. That combination of calm, craftsmanship and curiosity is what drives me."
     ];
   }
 
@@ -55,7 +55,7 @@
     // create theme badge
     const themeLabel = document.createElement('div');
     themeLabel.className = 'bio-theme';
-    themeLabel.textContent = 'Thema: Leren, Gaming, Music';
+    themeLabel.textContent = 'Theme: Learning, Gaming, Music';
 
     // populate paragraphs
     el.innerHTML = '';
