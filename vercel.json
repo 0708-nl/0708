@@ -2,14 +2,26 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
+  "redirects": [
     {
       "source": "/bio",
-      "destination": "/bio.html"
+      "destination": "/bio/",
+      "permanent": true
+    },
+    {
+      "source": "/bio.html",
+      "destination": "/bio/",
+      "permanent": true
     },
     {
       "source": "/hard-techno-artist",
-      "destination": "/hard-techno-artist.html"
+      "destination": "/hard-techno-artist/",
+      "permanent": true
+    },
+    {
+      "source": "/hard-techno-artist.html",
+      "destination": "/hard-techno-artist/",
+      "permanent": true
     }
   ],
   "headers": [
