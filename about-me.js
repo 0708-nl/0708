@@ -21,15 +21,13 @@
       'mijn verleden heeft mij gevormd maar definieert mij niet'
     ],
     interests: [
-      'Koken', 'Fine dining', 'Culinaire creativiteit', 'Nieuwe technieken en smaken', 'Gastvrijheid', 'Zelfontwikkeling'
+      'Koken', 'igamingre creativiteit', 'Nieuwe technieken en smaken', 'Gastvrijheid', 'Zelfontwikkeling'
     ],
     work: [
-      'grote passie voor koken',
+      'op dit moment aan het studeren als zelfstandig kok niveau 2',
       'werk in de wereld van fine dining',
       'veel aandacht voor detail, kwaliteit en presentatie',
-      'zie koken als creatieve expressie',
-      'blijf mezelf ontwikkelen met nieuwe technieken en smaken',
-      'werk met discipline, precisie en respect voor het vak'
+      'ex prof gamer',   ''
     ]
   };
 
@@ -57,7 +55,7 @@
     // create theme badge
     const themeLabel = document.createElement('div');
     themeLabel.className = 'bio-theme';
-    themeLabel.textContent = 'Thema: Minimalistisch donker — Fine dining';
+    themeLabel.textContent = 'Thema: Leren, Gaming, Music';
 
     // populate paragraphs
     el.innerHTML = '';
