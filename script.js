@@ -35,10 +35,10 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
-const contactNote = document.querySelector('.contact-note');
+const submitButton = contactForm?.querySelector('button[type="submit"]');
 
 if (contactForm && formStatus) {
-  contactForm.addEventListener('submit', (event) => {
+  contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const name = contactForm.querySelector('input[name="name"]').value.trim();
@@ -49,22 +49,49 @@ if (contactForm && formStatus) {
     if (!name || !email || !subject || !message) {
       formStatus.textContent = 'Fill in all fields before sending.';
       formStatus.classList.add('error');
+      formStatus.classList.remove('success');
       return;
     }
 
-    const mailto = `mailto:contact@0708.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\n${message}`
-    )}`;
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+    }
 
-    formStatus.textContent = 'Opening email client...';
+    formStatus.textContent = 'Sending your message...';
     formStatus.classList.remove('error');
     formStatus.classList.add('success');
 
-    window.location.href = mailto;
+    try {
+      const response = await fetch(contactForm.action, {
+        method: contactForm.method,
+        headers: {
+          Accept: 'application/json'
+        },
+        body: new FormData(contactForm)
+      });
 
-    setTimeout(() => {
-      contactForm.reset();
-    }, 500);
+      if (response.ok) {
+        contactForm.reset();
+        formStatus.textContent = 'Thanks! Your message was sent.';
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      const mailto = `mailto:contact@0708.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\n\n${message}`
+      )}`;
+
+      formStatus.textContent = 'Your message could not be sent directly. Opening your email app instead.';
+      formStatus.classList.remove('success');
+      formStatus.classList.add('error');
+      window.location.href = mailto;
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send inquiry';
+      }
+    }
   });
 }
 
