@@ -21,7 +21,7 @@
       'mijn verleden heeft mij gevormd maar definieert mij niet'
     ],
     interests: [
-      'Koken', 'igamingre creativiteit', 'Nieuwe technieken en smaken', 'Gastvrijheid', 'Zelfontwikkeling'
+      'Koken', 'Muziek', 'Gaming'
     ],
     work: [
       'op dit moment aan het studeren als zelfstandig kok niveau 2',
