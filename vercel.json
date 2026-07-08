@@ -1,20 +1,13 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": true,
-  "headers": [
+  "rewrites": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
+      "source": "/bio",
+      "destination": "/bio/index.html"
+    },
+    {
+      "source": "/hard-techno-artist",
+      "destination": "/hard-techno-artist/index.html"
     }
   ]
 }
