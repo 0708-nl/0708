@@ -1,0 +1,38 @@
+name: Generate profile images
+
+on:
+  push:
+    paths:
+      - 'bio/input.jpg'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate responsive images
+        run: npm run gen-profile
+
+      - name: Commit generated images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bio/profile.jpg bio/profile-400.jpg bio/profile-800.jpg bio/profile-1200.jpg || true
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: generate responsive profile images" || echo "nothing to commit"
+            git push
+          else
+            echo "No changes to commit"
+          fi

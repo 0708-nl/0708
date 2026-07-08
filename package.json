@@ -1,0 +1,10 @@
+{
+  "name": "0708-site",
+  "version": "1.0.0",
+  "scripts": {
+    "gen-profile": "node scripts/generate-profile.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.32.1"
+  }
+}

@@ -644,3 +644,135 @@ textarea:focus-visible {
   }
 }
 
+/* About Me page styles */
+.about-section {
+  padding-top: 2.2rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.about-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-photo {
+  width: 220px;
+  height: 220px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.profile-svg-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-content {
+  display: grid;
+  gap: 1rem;
+}
+
+.about-text {
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+  max-width: 72ch;
+}
+
+.interests ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0;
+  margin: 0.4rem 0 0;
+  list-style: none;
+}
+
+.interests li {
+  background: rgba(255,255,255,0.02);
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--accent-2);
+  border: 1px solid rgba(188,255,61,0.06);
+}
+
+.growth-timeline ol {
+  padding-left: 0;
+  margin: 0.6rem 0 0;
+  list-style: none;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.growth-timeline li {
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+}
+
+/* Animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeInUp 700ms ease forwards;
+}
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 900px) {
+  .about-grid {
+    grid-template-columns: 260px 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Generated bio spacing and theme badge */
+.bio-theme {
+  display: inline-block;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.02);
+  color: var(--accent-2);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid rgba(188,255,61,0.06);
+}
+
+.generated-bio-body p {
+  margin: 0 0 1rem 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.generated-bio-body p:first-of-type {
+  color: var(--text);
+}
+
+
+
