@@ -37,7 +37,8 @@ const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 const submitButton = contactForm?.querySelector('button[type="submit"]');
 
-if (contactForm && formStatus) {
+// Only attach AJAX handler when the form explicitly opts in with data-ajax="true"
+if (contactForm && formStatus && contactForm.dataset.ajax === 'true') {
   contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
