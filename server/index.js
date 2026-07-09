@@ -6,6 +6,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -135,6 +136,32 @@ app.get('/api/track', async (req, res) => {
 
 app.get('/', (req, res) => {
   res.json({ ok: true, info: 'Spotify covers backend. Use /api/track' });
+});
+
+// Proxy contact form submissions to FormSubmit (server-side forwarding avoids CORS issues)
+app.post('/api/contact', async (req, res) => {
+  try {
+    const formData = req.body || {};
+
+    // Build urlencoded body
+    const params = new URLSearchParams();
+    Object.keys(formData).forEach((k) => {
+      if (formData[k] !== undefined && formData[k] !== null) params.append(k, formData[k]);
+    });
+
+    const response = await axios.post('https://formsubmit.co/contact@0708.nl', params.toString(), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      maxRedirects: 0,
+      validateStatus: (s) => s >= 200 && s < 400
+    });
+
+    // FormSubmit often responds with a redirect — treat 200-399 as success
+    res.json({ ok: true, status: response.status });
+  } catch (err) {
+    console.error('Contact proxy error', err?.response?.data || err.message);
+    const status = err.response?.status || 500;
+    res.status(status).json({ ok: false, error: 'Failed to forward contact' });
+  }
 });
 
 app.listen(PORT, () => {

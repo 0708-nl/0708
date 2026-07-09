@@ -64,8 +64,9 @@ if (contactForm && formStatus && contactForm.dataset.ajax === 'true') {
     formStatus.classList.add('success');
 
     try {
-      const response = await fetch(contactForm.action, {
-        method: contactForm.method,
+      // Send to our server proxy to avoid CORS issues
+      const response = await fetch('/api/contact', {
+        method: 'POST',
         headers: {
           Accept: 'application/json'
         },
@@ -93,6 +94,30 @@ if (contactForm && formStatus && contactForm.dataset.ajax === 'true') {
         submitButton.textContent = 'Send inquiry';
       }
     }
+  });
+}
+
+// CORS diagnostic button: attempts an OPTIONS request to FormSubmit to detect CORS availability
+const corsBtn = document.getElementById('corsTest');
+if (corsBtn && formStatus) {
+  corsBtn.addEventListener('click', async () => {
+    formStatus.textContent = 'Testing FormSubmit CORS...';
+    formStatus.classList.remove('error');
+    formStatus.classList.remove('success');
+    try {
+      const res = await fetch('https://formsubmit.co/contact@0708.nl', { method: 'OPTIONS', mode: 'cors' });
+      if (res.ok || res.status === 204) {
+        formStatus.textContent = `FormSubmit CORS test: allowed (status ${res.status}). AJAX submissions may work.`;
+        formStatus.classList.add('success');
+      } else {
+        formStatus.textContent = `FormSubmit CORS test: responded ${res.status}. AJAX may be unreliable.`;
+        formStatus.classList.add('error');
+      }
+    } catch (err) {
+      formStatus.textContent = 'FormSubmit CORS test failed (blocked by CORS or network error). Use server proxy.';
+      formStatus.classList.add('error');
+    }
+    setTimeout(() => { formStatus.textContent = ''; formStatus.classList.remove('error','success'); }, 6000);
   });
 }
 
