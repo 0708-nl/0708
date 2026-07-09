@@ -291,6 +291,7 @@ h1 {
 
 .section {
   padding: 3rem 0 0;
+  scroll-margin-top: 110px;
 }
 
 .problems .problem-grid {
