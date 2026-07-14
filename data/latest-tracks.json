@@ -1,0 +1,76 @@
+{
+  "artistId": "3ALqcftkgIiEwVx1mdzdKh",
+  "generatedAt": "2026-07-14T03:30:00Z",
+  "tracks": [
+    {
+      "id": "5FXx35SqfEJkRvsym6VTnC",
+      "title": "CRISTAL",
+      "artists": ["0708", "Johan Derksen"],
+      "album": "CRISTAL",
+      "artwork": {
+        "url": "https://i.scdn.co/image/ab67616d0000b2737383c8527275c1cb68fdd93b",
+        "width": 640,
+        "height": 640
+      },
+      "releaseDate": "2026-07-09",
+      "releaseDatePrecision": "day",
+      "spotifyUrl": "https://open.spotify.com/track/5FXx35SqfEJkRvsym6VTnC"
+    },
+    {
+      "id": "2Ak2jeZF4KCEm3JsYmTah2",
+      "title": "GOD DOES NOT EXIST",
+      "artists": ["0708", "Johan Derksen"],
+      "album": "GOD DOES NOT EXIST",
+      "artwork": {
+        "url": "https://i.scdn.co/image/ab67616d0000b273e91df93c466a3d560a8817d9",
+        "width": 640,
+        "height": 640
+      },
+      "releaseDate": "2026-07-08",
+      "releaseDatePrecision": "day",
+      "spotifyUrl": "https://open.spotify.com/track/2Ak2jeZF4KCEm3JsYmTah2"
+    },
+    {
+      "id": "4f10MdERFl9XAvhnOByIlP",
+      "title": "sacrefice",
+      "artists": ["0708", "Johan Derksen"],
+      "album": "sacrefice",
+      "artwork": {
+        "url": "https://i.scdn.co/image/ab67616d0000b273955426a22a25c65c9ed0b0b9",
+        "width": 640,
+        "height": 640
+      },
+      "releaseDate": "2026-07-07",
+      "releaseDatePrecision": "day",
+      "spotifyUrl": "https://open.spotify.com/track/4f10MdERFl9XAvhnOByIlP"
+    },
+    {
+      "id": "1frEKMILVyyxiTs4B2e8ep",
+      "title": "i could have saved u",
+      "artists": ["0708", "Johan Derksen"],
+      "album": "i could have saved u",
+      "artwork": {
+        "url": "https://i.scdn.co/image/ab67616d0000b273b580262f691dbba80ccc3ca1",
+        "width": 640,
+        "height": 640
+      },
+      "releaseDate": "2026-07-04",
+      "releaseDatePrecision": "day",
+      "spotifyUrl": "https://open.spotify.com/track/1frEKMILVyyxiTs4B2e8ep"
+    },
+    {
+      "id": "3xbnoInKBonrf6dsZFZE4P",
+      "title": "CONCRETE PULSE",
+      "artists": ["0708", "sem wilting"],
+      "album": "CONCRETE PULSE",
+      "artwork": {
+        "url": "https://i.scdn.co/image/ab67616d0000b273ecf84c473d2ce7341dbf5016",
+        "width": 640,
+        "height": 640
+      },
+      "releaseDate": "2026-07-02",
+      "releaseDatePrecision": "day",
+      "spotifyUrl": "https://open.spotify.com/track/3xbnoInKBonrf6dsZFZE4P"
+    }
+  ]
+}

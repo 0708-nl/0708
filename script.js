@@ -201,13 +201,27 @@
     if (!latestTracks) return;
 
     try {
-      const response = await fetch('/api/latest-tracks', {
-        headers: { Accept: 'application/json' }
-      });
+      const sources = ['/api/latest-tracks', '/data/latest-tracks.json'];
+      let data = null;
 
-      if (!response.ok) throw new Error(`Latest tracks request failed with ${response.status}`);
+      for (const source of sources) {
+        try {
+          const response = await fetch(source, {
+            headers: { Accept: 'application/json' }
+          });
+          if (!response.ok) continue;
 
-      const data = await response.json();
+          const candidate = await response.json();
+          if (Array.isArray(candidate.tracks) && candidate.tracks.length > 0) {
+            data = candidate;
+            break;
+          }
+        } catch {
+          // Try the static last-known-good release list next.
+        }
+      }
+
+      if (!data) throw new Error('No track source is available');
       if (!Array.isArray(data.tracks) || data.tracks.length === 0) {
         throw new Error('Spotify returned no recent tracks');
       }

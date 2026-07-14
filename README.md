@@ -25,6 +25,8 @@ After adding or changing environment variables, redeploy the latest deployment. 
 
 The Latest Sounds cards are loaded from `/api/latest-tracks`. Locally, the Express server reads Spotify credentials from `server/.env`; on Vercel, the serverless function reads them from the project Environment Variables.
 
+If Spotify or its credentials are temporarily unavailable, both the function and browser fall back to `data/latest-tracks.json`, so the public Latest Sounds section remains usable.
+
 ## Content updates
 
 - Main page content: `index.html`

@@ -1,6 +1,99 @@
-const ARTIST_ID = process.env.SPOTIFY_ARTIST_ID || '3ALqcftkgIiEwVx1mdzdKh';
-const SPOTIFY_MARKET = process.env.SPOTIFY_MARKET || 'NL';
+function environmentValue(name, fallback = '') {
+  let value = String(process.env[name] || '').trim();
+  const assignmentPrefix = `${name}=`;
+
+  // Be forgiving when a complete NAME=value line was pasted into Vercel.
+  if (value.startsWith(assignmentPrefix)) {
+    value = value.slice(assignmentPrefix.length).trim();
+  }
+
+  if (
+    value.length >= 2 &&
+    ((value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'")))
+  ) {
+    value = value.slice(1, -1).trim();
+  }
+
+  return value || fallback;
+}
+
+const ARTIST_ID = environmentValue('SPOTIFY_ARTIST_ID', '3ALqcftkgIiEwVx1mdzdKh');
+const SPOTIFY_MARKET = environmentValue('SPOTIFY_MARKET', 'NL');
 const CACHE_TTL_MS = 15 * 60 * 1000;
+
+const FALLBACK_TRACKS = [
+  {
+    id: '5FXx35SqfEJkRvsym6VTnC',
+    title: 'CRISTAL',
+    artists: ['0708', 'Johan Derksen'],
+    album: 'CRISTAL',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b2737383c8527275c1cb68fdd93b',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-07-09',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/track/5FXx35SqfEJkRvsym6VTnC'
+  },
+  {
+    id: '2Ak2jeZF4KCEm3JsYmTah2',
+    title: 'GOD DOES NOT EXIST',
+    artists: ['0708', 'Johan Derksen'],
+    album: 'GOD DOES NOT EXIST',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b273e91df93c466a3d560a8817d9',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-07-08',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/track/2Ak2jeZF4KCEm3JsYmTah2'
+  },
+  {
+    id: '4f10MdERFl9XAvhnOByIlP',
+    title: 'sacrefice',
+    artists: ['0708', 'Johan Derksen'],
+    album: 'sacrefice',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b273955426a22a25c65c9ed0b0b9',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-07-07',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/track/4f10MdERFl9XAvhnOByIlP'
+  },
+  {
+    id: '1frEKMILVyyxiTs4B2e8ep',
+    title: 'i could have saved u',
+    artists: ['0708', 'Johan Derksen'],
+    album: 'i could have saved u',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b273b580262f691dbba80ccc3ca1',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-07-04',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/track/1frEKMILVyyxiTs4B2e8ep'
+  },
+  {
+    id: '3xbnoInKBonrf6dsZFZE4P',
+    title: 'CONCRETE PULSE',
+    artists: ['0708', 'sem wilting'],
+    album: 'CONCRETE PULSE',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b273ecf84c473d2ce7341dbf5016',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-07-02',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/track/3xbnoInKBonrf6dsZFZE4P'
+  }
+];
 
 let tokenCache = { accessToken: null, expiresAt: 0 };
 let tracksCache = { tracks: null, expiresAt: 0 };
@@ -14,8 +107,8 @@ class SpotifyError extends Error {
 }
 
 async function getAccessToken() {
-  const clientId = process.env.SPOTIFY_CLIENT_ID;
-  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+  const clientId = environmentValue('SPOTIFY_CLIENT_ID');
+  const clientSecret = environmentValue('SPOTIFY_CLIENT_SECRET');
 
   if (!clientId || !clientSecret) {
     throw new SpotifyError('Spotify credentials are not configured', 503);
@@ -149,19 +242,26 @@ export async function GET() {
     );
   } catch (error) {
     const status = Number(error.status) || 500;
-    const headers = { 'Cache-Control': 'no-store' };
-    if (error.retryAfter) headers['Retry-After'] = error.retryAfter;
+    console.error(`Latest tracks function failed with ${status}:`, error.message);
 
-    console.error('Latest tracks function failed:', error.message);
+    // Never leave the public page empty because Spotify or its credentials failed.
+    tracksCache = {
+      tracks: FALLBACK_TRACKS,
+      expiresAt: Date.now() + 5 * 60 * 1000
+    };
+
     return Response.json(
       {
-        error:
-          status === 503
-            ? 'Spotify is not configured on this deployment'
-            : 'Unable to load latest Spotify tracks'
+        artistId: ARTIST_ID,
+        tracks: FALLBACK_TRACKS,
+        stale: true
       },
-      { status, headers }
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=86400',
+          'X-Track-Source': 'fallback'
+        }
+      }
     );
   }
 }
-
