@@ -2,6 +2,8 @@
   "name": "0708-site",
   "version": "1.0.0",
   "scripts": {
+    "start": "npm --prefix server start",
+    "check": "node --check script.js && node --check server/index.js",
     "gen-profile": "node scripts/generate-profile.js"
   },
   "devDependencies": {

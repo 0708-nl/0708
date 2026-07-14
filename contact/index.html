@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact 0708 | Bookings & Collaborations</title>
+    <meta
+      name="description"
+      content="Contact 0708 for bookings, collaborations, press inquiries, and availability."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://0708.nl/contact/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css?v=4" />
+    <link rel="stylesheet" href="/theme.css?v=4" />
+  </head>
+  <body class="contact-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="0708 home">0708</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <a href="/bio/">Bio</a>
+        <a href="/hard-techno-artist/">Hard Techno</a>
+        <a href="/contact/" aria-current="page">Contact</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main-content">
+      <section class="page-card contact-card reveal">
+        <div class="section-heading">
+          <h1>Contact</h1>
+        </div>
+
+        <p class="contact-intro">
+          For bookings, collaborations, press inquiries, and availability. Send a message below or email
+          <a href="mailto:contact@0708.nl">contact@0708.nl</a>.
+        </p>
+
+        <form
+          id="contactForm"
+          class="contact-form"
+          data-ajax="true"
+          action="https://formsubmit.co/contact@0708.nl"
+          method="POST"
+          accept-charset="UTF-8"
+        >
+          <input type="hidden" name="_subject" value="New message from 0708 website" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="https://0708.nl/contact/" />
+          <label>
+            Name
+            <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+          </label>
+          <label>
+            Subject
+            <input type="text" name="subject" placeholder="Subject" required />
+          </label>
+          <label>
+            Message
+            <textarea name="message" rows="6" placeholder="Your message" required></textarea>
+          </label>
+          <button type="submit">Send inquiry</button>
+          <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+          <p class="contact-note">If direct sending is unavailable, the site opens a pre-filled email draft instead.</p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-brand">0708</p>
+      <div class="footer-links">
+        <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Spotify</a>
+        <a href="https://www.instagram.com/0708nl" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="mailto:contact@0708.nl">Email</a>
+      </div>
+      <p class="footer-meta">© 2026 0708. All rights reserved.</p>
+    </footer>
+
+    <script src="/script.js?v=4"></script>
+  </body>
+</html>

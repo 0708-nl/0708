@@ -51,8 +51,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles.css" />
-    <link rel="stylesheet" href="/theme.css" />
+    <link rel="stylesheet" href="/styles.css?v=4" />
+    <link rel="stylesheet" href="/theme.css?v=4" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -77,31 +77,33 @@
       }
     </script>
   </head>
-  <body>
+  <body class="home-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="noise" aria-hidden="true"></div>
 
     <header class="site-header">
       <a class="brand" href="#top" aria-label="0708 home">0708</a>
-      <nav class="site-nav" aria-label="Main navigation">
-        <a href="#music">Music</a>
-        <a href="#about">About</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
         <a href="/bio/">Bio</a>
         <a href="/hard-techno-artist/">Hard Techno</a>
-        <a href="#shows">Shows</a>
-        <a href="#press">Press</a>
-        <a href="#contact">Contact</a>
+        <a href="/contact/">Contact</a>
       </nav>
     </header>
 
-    <main id="top">
-      <section class="hero">
+    <main id="main-content">
+      <section class="hero" id="top">
         <div class="hero-copy reveal">
           <p class="eyebrow">Hard techno / hardcore</p>
           <h1>0708</h1>
           <p class="tagline">Underground hard techno artist and hardcore producer crafting raw kicks, relentless energy, and uncompromising intensity for dark rooms and late-night sets.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Listen on Spotify</a>
-            <a class="btn btn-secondary" href="#contact">Book 0708</a>
+            <a class="btn btn-secondary" href="/contact/">Book 0708</a>
           </div>
           <ul class="hero-meta">
             <li>Underground pressure</li>
@@ -118,79 +120,27 @@
 
       <section id="music" class="section music reveal">
         <div class="section-heading">
-          <p class="eyebrow">Latest Sounds</p>
           <h2>Latest Sounds</h2>
         </div>
 
-        <div class="spotify-panel">
-          <iframe
-            class="spotify-embed"
-            title="0708 on Spotify"
-            src="about:blank"
-            data-src="https://open.spotify.com/embed/artist/3ALqcftkgIiEwVx1mdzdKh?utm_source=generator"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-          ></iframe>
-
-          <div class="spotify-overlay" aria-hidden="false">
-            <div class="overlay-inner">
-              <a class="btn btn-primary" id="openSpotify" href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer" aria-label="Open 0708 on Spotify">Open on Spotify</a>
-              <button class="btn" id="loadSpotify" type="button" aria-label="Load Spotify player">Load player</button>
-            </div>
-          </div>
+        <div class="track-grid" id="latestTracks" aria-live="polite" aria-busy="true">
+          <article class="track-card track-skeleton" aria-hidden="true"></article>
+          <article class="track-card track-skeleton" aria-hidden="true"></article>
+          <article class="track-card track-skeleton" aria-hidden="true"></article>
+          <article class="track-card track-skeleton" aria-hidden="true"></article>
+          <article class="track-card track-skeleton" aria-hidden="true"></article>
         </div>
-
-        <div class="track-grid">
-          <a class="track-card" href="https://open.spotify.com/search/RAW%20KICKS%20MOTHERFUCKER" target="_blank" rel="noopener noreferrer" aria-label="Open RAW KICKS MOTHERFUCKER on Spotify">
-            <h3>RAW KICKS MOTHERFUCKER</h3>
-            <div class="track-meta">
-              <span>Hard techno</span>
-              <span>Raw kicks</span>
-            </div>
-            <p>Distorted pressure straight to the body.</p>
-          </a>
-
-          <a class="track-card" href="https://open.spotify.com/search/JIEEHAA" target="_blank" rel="noopener noreferrer" aria-label="Open JIEEHAA on Spotify">
-            <h3>JIEEHAA</h3>
-            <div class="track-meta">
-              <span>Hardcore</span>
-              <span>Underground</span>
-            </div>
-            <p>Brutal, clipped, and built for the back room.</p>
-          </a>
-
-          <a class="track-card" href="https://open.spotify.com/search/CHILDREN%200708" target="_blank" rel="noopener noreferrer" aria-label="Open CHILDREN on Spotify">
-            <h3>CHILDREN</h3>
-            <div class="track-meta">
-              <span>Hard techno</span>
-              <span>Raw kicks</span>
-            </div>
-            <p>Cold rhythm and relentless drive.</p>
-          </a>
-
-          <a class="track-card" href="https://open.spotify.com/search/HARDE%20POEKOE" target="_blank" rel="noopener noreferrer" aria-label="Open HARDE POEKOE on Spotify">
-            <h3>HARDE POEKOE</h3>
-            <div class="track-meta">
-              <span>Hardcore</span>
-              <span>Underground</span>
-            </div>
-            <p>Fast, abrasive, no compromise.</p>
-          </a>
-
-          <a class="track-card" href="https://open.spotify.com/search/OPEN%20YOUR%20EYES%200708" target="_blank" rel="noopener noreferrer" aria-label="Open OPEN YOUR EYES on Spotify">
-            <h3>OPEN YOUR EYES</h3>
-            <div class="track-meta">
-              <span>Hard techno</span>
-              <span>Raw kicks</span>
-            </div>
-            <p>High pressure with a direct pulse.</p>
-          </a>
-        </div>
+        <p class="spotify-attribution">
+          Release data and artwork provided by
+          <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Spotify</a>.
+        </p>
+        <noscript>
+          <p class="track-error">Enable JavaScript or <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh">open 0708 on Spotify</a> to view the latest releases.</p>
+        </noscript>
       </section>
 
       <section id="about" class="section about reveal">
         <div class="section-heading">
-          <p class="eyebrow">About</p>
           <h2>About 0708</h2>
         </div>
         <p class="about-text">
@@ -200,7 +150,6 @@
 
       <section id="signature" class="section signature reveal">
         <div class="section-heading">
-          <p class="eyebrow">Signature</p>
           <h2>What defines 0708</h2>
         </div>
 
@@ -222,94 +171,6 @@
         </div>
       </section>
 
-      <section id="shows" class="section shows reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Shows</p>
-          <h2>Upcoming dates</h2>
-        </div>
-
-        <div class="show-grid" id="showList" aria-live="polite"></div>
-        <p id="showEmpty" class="show-empty">Upcoming dates TBA.</p>
-
-        <p class="note">No scheduled shows yet — contact 0708 for availability.</p>
-      </section>
-
-      <section id="press" class="section press reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Press Kit</p>
-          <h2>Press assets</h2>
-        </div>
-
-        <div class="press-note">
-          <p>Press assets available on request — email <a href="mailto:contact@0708.nl">contact@0708.nl</a>.</p>
-        </div>
-      </section>
-
-      <section id="contact" class="section contact reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Contact</p>
-          <h2>Contact</h2>
-        </div>
-
-        <p class="contact-copy">For contact, collaboration requests, press inquiries, and show availability.</p>
-
-        <form
-          id="contactForm"
-          class="contact-form"
-          data-ajax="true"
-          action="https://formsubmit.co/contact@0708.nl"
-          method="POST"
-          accept-charset="UTF-8"
-        >
-          <input type="hidden" name="_subject" value="New message from 0708 website" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_next" value="https://0708.nl/" />
-          <label>
-            Name
-            <input type="text" name="name" placeholder="Name" required />
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" placeholder="Email" required />
-          </label>
-          <label>
-            Subject
-            <input type="text" name="subject" placeholder="Subject" required />
-          </label>
-          <label>
-            Message
-            <textarea name="message" rows="5" placeholder="Message" required></textarea>
-          </label>
-          <button type="submit">Send inquiry</button>
-          <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
-          <p class="contact-note">If the form does not send immediately, email <a href="mailto:contact@0708.nl">contact@0708.nl</a>.</p>
-        </form>
-      </section>
-
-      <section id="promoters" class="section promoters reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Booking</p>
-          <h2>For promoters and venues</h2>
-        </div>
-
-        <div class="problem-grid">
-          <article class="problem-card">
-            <h3>Bookings</h3>
-            <p>Available for club dates, underground events, and high-intensity bookings.</p>
-          </article>
-
-          <article class="problem-card">
-            <h3>Technical fit</h3>
-            <p>Heavy rigs and clear sound are important. Share PA specs and load-in time early.</p>
-          </article>
-
-          <article class="problem-card">
-            <h3>Press & promo</h3>
-            <p>Press materials and promo info are available on request for the right event.</p>
-          </article>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">
@@ -324,6 +185,6 @@
       <p class="footer-meta">© 2026 0708. All rights reserved.</p>
     </footer>
 
-    <script src="/script.js"></script>
+    <script src="/script.js?v=4"></script>
   </body>
 </html>

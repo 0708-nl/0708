@@ -1,199 +1,234 @@
-const revealItems = document.querySelectorAll('.reveal');
+(() => {
+  const header = document.querySelector('.site-header');
+  const navToggle = document.querySelector('.nav-toggle');
+  const siteNav = document.querySelector('.site-nav');
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        observer.unobserve(entry.target);
+  const closeNavigation = () => {
+    if (!header || !navToggle) return;
+    header.classList.remove('nav-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  };
+
+  if (header && navToggle && siteNav) {
+    navToggle.addEventListener('click', () => {
+      const willOpen = navToggle.getAttribute('aria-expanded') !== 'true';
+      header.classList.toggle('nav-open', willOpen);
+      navToggle.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    siteNav.addEventListener('click', (event) => {
+      if (event.target.closest('a')) closeNavigation();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeNavigation();
+        navToggle.focus();
       }
     });
-  },
-  { threshold: 0.15 }
-);
 
-revealItems.forEach((item) => observer.observe(item));
+    document.addEventListener('click', (event) => {
+      if (header.classList.contains('nav-open') && !header.contains(event.target)) {
+        closeNavigation();
+      }
+    });
 
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener('click', (event) => {
-    const targetId = anchor.getAttribute('href');
+    const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+  }
 
-    if (!targetId || targetId === '#') {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealItems = document.querySelectorAll('.reveal');
+
+  if (!reducedMotion && 'IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.animate(
+            [
+              { opacity: 0, transform: 'translateY(18px)' },
+              { opacity: 1, transform: 'translateY(0)' }
+            ],
+            { duration: 620, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'both' }
+          );
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+  }
+
+  const contactForm = document.getElementById('contactForm');
+  const formStatus = document.getElementById('formStatus');
+  const submitButton = contactForm?.querySelector('button[type="submit"]');
+
+  if (contactForm && formStatus && contactForm.dataset.ajax === 'true') {
+    contactForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      return;
+
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        formStatus.textContent = 'Please complete every required field.';
+        formStatus.className = 'form-status error';
+        return;
+      }
+
+      const formData = new FormData(contactForm);
+      const name = String(formData.get('name') || '').trim();
+      const email = String(formData.get('email') || '').trim();
+      const subject = String(formData.get('subject') || '').trim();
+      const message = String(formData.get('message') || '').trim();
+      const payload = new URLSearchParams();
+
+      formData.forEach((value, key) => payload.append(key, String(value)));
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending…';
+      }
+
+      formStatus.textContent = 'Sending your message…';
+      formStatus.className = 'form-status';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: payload.toString()
+        });
+
+        if (!response.ok) throw new Error(`Contact request failed with ${response.status}`);
+
+        contactForm.reset();
+        formStatus.textContent = 'Thanks — your message was sent.';
+        formStatus.className = 'form-status success';
+      } catch (error) {
+        const mailto = `mailto:contact@0708.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+          `Name: ${name}\nEmail: ${email}\n\n${message}`
+        )}`;
+
+        formStatus.textContent = 'Direct sending is unavailable. Opening your email app instead.';
+        formStatus.className = 'form-status error';
+        window.location.href = mailto;
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Send inquiry';
+        }
+      }
+    });
+  }
+
+  const latestTracks = document.getElementById('latestTracks');
+
+  const formatReleaseDate = (date, precision) => {
+    if (!date) return 'Release date unavailable';
+    if (precision === 'year') return date;
+
+    const normalizedDate = precision === 'month' ? `${date}-01` : date;
+    const parsedDate = new Date(`${normalizedDate}T00:00:00Z`);
+    if (Number.isNaN(parsedDate.getTime())) return date;
+
+    return parsedDate.toLocaleDateString('en-GB', {
+      day: precision === 'day' ? 'numeric' : undefined,
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC'
+    });
+  };
+
+  const createTrackCard = (track) => {
+    const card = document.createElement('a');
+    card.className = 'track-card spotify-track-card';
+    card.href = track.spotifyUrl;
+    card.target = '_blank';
+    card.rel = 'noopener noreferrer';
+    card.setAttribute('aria-label', `Play ${track.title} by ${track.artists.join(', ')} on Spotify`);
+
+    if (track.artwork?.url) {
+      const artwork = document.createElement('img');
+      artwork.className = 'track-artwork';
+      artwork.src = track.artwork.url;
+      artwork.alt = `${track.album} album cover`;
+      artwork.loading = 'lazy';
+      artwork.decoding = 'async';
+      if (track.artwork.width) artwork.width = track.artwork.width;
+      if (track.artwork.height) artwork.height = track.artwork.height;
+      card.appendChild(artwork);
+    } else {
+      const artworkFallback = document.createElement('div');
+      artworkFallback.className = 'track-artwork track-artwork-fallback';
+      artworkFallback.setAttribute('aria-hidden', 'true');
+      artworkFallback.textContent = '0708';
+      card.appendChild(artworkFallback);
     }
 
-    const target = document.querySelector(targetId);
+    const body = document.createElement('div');
+    body.className = 'track-card-body';
 
-    if (target) {
-      event.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-});
+    const title = document.createElement('h3');
+    title.textContent = track.title;
 
-const contactForm = document.getElementById('contactForm');
-const formStatus = document.getElementById('formStatus');
-const submitButton = contactForm?.querySelector('button[type="submit"]');
+    const artist = document.createElement('p');
+    artist.className = 'track-artist';
+    artist.textContent = track.artists.join(', ');
 
-// Only attach AJAX handler when the form explicitly opts in with data-ajax="true"
-if (contactForm && formStatus && contactForm.dataset.ajax === 'true') {
-  contactForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+    const album = document.createElement('p');
+    album.className = 'track-album';
+    album.textContent = track.album;
 
-    const name = contactForm.querySelector('input[name="name"]').value.trim();
-    const email = contactForm.querySelector('input[name="email"]').value.trim();
-    const subject = contactForm.querySelector('input[name="subject"]').value.trim();
-    const message = contactForm.querySelector('textarea[name="message"]').value.trim();
+    const releaseDate = document.createElement('time');
+    releaseDate.className = 'track-release-date';
+    releaseDate.dateTime = track.releaseDate;
+    releaseDate.textContent = formatReleaseDate(track.releaseDate, track.releaseDatePrecision);
 
-    if (!name || !email || !subject || !message) {
-      formStatus.textContent = 'Fill in all fields before sending.';
-      formStatus.classList.add('error');
-      formStatus.classList.remove('success');
-      return;
-    }
+    const spotifyLabel = document.createElement('span');
+    spotifyLabel.className = 'spotify-link-label';
+    spotifyLabel.textContent = 'Play on Spotify ↗';
 
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.textContent = 'Sending...';
-    }
+    body.append(title, artist, album, releaseDate, spotifyLabel);
+    card.appendChild(body);
+    return card;
+  };
 
-    formStatus.textContent = 'Sending your message...';
-    formStatus.classList.remove('error');
-    formStatus.classList.add('success');
+  const loadLatestTracks = async () => {
+    if (!latestTracks) return;
 
     try {
-      // Send to our server proxy to avoid CORS issues
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json'
-        },
-        body: new FormData(contactForm)
+      const response = await fetch('/api/latest-tracks', {
+        headers: { Accept: 'application/json' }
       });
 
-      if (response.ok) {
-        contactForm.reset();
-        formStatus.textContent = 'Thanks! Your message was sent.';
-      } else {
-        throw new Error('Submission failed');
+      if (!response.ok) throw new Error(`Latest tracks request failed with ${response.status}`);
+
+      const data = await response.json();
+      if (!Array.isArray(data.tracks) || data.tracks.length === 0) {
+        throw new Error('Spotify returned no recent tracks');
       }
+
+      latestTracks.replaceChildren(...data.tracks.slice(0, 5).map(createTrackCard));
+      latestTracks.setAttribute('aria-busy', 'false');
     } catch (error) {
-      const mailto = `mailto:contact@0708.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\n${message}`
-      )}`;
-
-      formStatus.textContent = 'Your message could not be sent directly. Opening your email app instead.';
-      formStatus.classList.remove('success');
-      formStatus.classList.add('error');
-      window.location.href = mailto;
-    } finally {
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Send inquiry';
-      }
+      const message = document.createElement('p');
+      const link = document.createElement('a');
+      message.className = 'track-error';
+      message.textContent = 'Latest releases are temporarily unavailable. ';
+      link.href = 'https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh';
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = 'Open 0708 on Spotify.';
+      message.appendChild(link);
+      latestTracks.replaceChildren(message);
+      latestTracks.setAttribute('aria-busy', 'false');
     }
-  });
-}
+  };
 
-const showData = [];
-const showList = document.getElementById('showList');
-const showEmpty = document.getElementById('showEmpty');
-
-if (showList && showEmpty) {
-  if (showData.length > 0) {
-    showEmpty.style.display = 'none';
-    showData.forEach((show) => {
-      const card = document.createElement('article');
-      card.className = 'show-card';
-      card.innerHTML = `
-        <p class="status">${show.status || ''}</p>
-        <h3>${show.venue}</h3>
-        <p>${show.city}</p>
-        <p>${show.date}</p>
-        ${show.ticketUrl ? `<a href="${show.ticketUrl}" target="_blank" rel="noopener noreferrer">Ticket link</a>` : ''}
-      `;
-      showList.appendChild(card);
-    });
-  } else {
-    showList.style.display = 'none';
-  }
-}
-
-// Spotify embed lazy-load and overlay handling
-(() => {
-  const iframe = document.querySelector('.spotify-embed');
-  const overlay = document.querySelector('.spotify-overlay');
-  const loadBtn = document.getElementById('loadSpotify');
-  const openBtn = document.getElementById('openSpotify');
-
-  if (!iframe || !overlay) return;
-
-  const loader = document.createElement('span');
-  loader.className = 'spotify-loader';
-  loader.innerText = 'Loading...';
-  overlay.querySelector('.overlay-inner')?.appendChild(loader);
-
-  let srcSet = false;
-
-  function showOverlay() {
-    overlay.classList.remove('hidden');
-    overlay.setAttribute('aria-hidden', 'false');
-  }
-
-  function hideOverlay() {
-    overlay.classList.add('hidden');
-    overlay.setAttribute('aria-hidden', 'true');
-  }
-
-  function setSrc() {
-    if (srcSet) return;
-    const data = iframe.getAttribute('data-src');
-    if (!data) return;
-    iframe.src = data;
-    srcSet = true;
-
-    // if load fires, hide overlay
-    iframe.addEventListener('load', () => {
-      hideOverlay();
-    });
-
-    // fallback: hide overlay after 3s even if load doesn't fire
-    setTimeout(() => {
-      hideOverlay();
-      loader.innerText = 'Player loaded';
-    }, 3000);
-  }
-
-  // Intersection observer to lazy-load when visible
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        setSrc();
-        obs.unobserve(iframe);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  try {
-    obs.observe(iframe);
-    showOverlay();
-  } catch (e) {
-    // if observe fails, just set src
-    setSrc();
-  }
-
-  if (loadBtn) {
-    loadBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      setSrc();
-    });
-  }
-
-  if (openBtn) {
-    openBtn.addEventListener('click', () => {
-      // overlay remains but user can open Spotify directly
-    });
-  }
+  loadLatestTracks();
 })();
