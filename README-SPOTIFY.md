@@ -2,9 +2,14 @@
 
 This project adds Spotify album covers to track listings using the Spotify Web API (Client Credentials flow).
 
-Backend (server)
+Production (Vercel)
+- Location: `api/latest-tracks.mjs`
+- Add `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in Vercel Project Settings > Environment Variables.
+- Redeploy after adding or changing environment variables.
+
+Local Express server
 - Location: `server/`
-- Requires `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in `.env` (see `.env.example`).
+- Requires `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in `server/.env` (see `.env.example`).
 - Install and run:
 
 ```bash

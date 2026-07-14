@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "npm --prefix server start",
-    "check": "node --check script.js && node --check server/index.js",
+    "preview:vercel": "node scripts/preview-vercel.mjs",
+    "check": "node --check script.js && node --check server/index.js && node --check api/latest-tracks.mjs && node --check api/contact.mjs",
     "gen-profile": "node scripts/generate-profile.js"
   },
   "devDependencies": {

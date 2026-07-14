@@ -104,19 +104,18 @@
           body: payload.toString()
         });
 
-        if (!response.ok) throw new Error(`Contact request failed with ${response.status}`);
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || `Contact request failed with ${response.status}`);
+        }
 
         contactForm.reset();
         formStatus.textContent = 'Thanks — your message was sent.';
         formStatus.className = 'form-status success';
       } catch (error) {
-        const mailto = `mailto:contact@0708.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-          `Name: ${name}\nEmail: ${email}\n\n${message}`
-        )}`;
-
-        formStatus.textContent = 'Direct sending is unavailable. Opening your email app instead.';
-        formStatus.className = 'form-status error';
-        window.location.href = mailto;
+        formStatus.textContent = 'Switching to backup form delivery...';
+        formStatus.className = 'form-status';
+        HTMLFormElement.prototype.submit.call(contactForm);
       } finally {
         if (submitButton) {
           submitButton.disabled = false;

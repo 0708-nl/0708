@@ -1,6 +1,9 @@
 # Secrets
 .env
+.env.*
+!.env.example
 server/.env
+.vercel/
 
 # Dependencies and local files
 node_modules/
