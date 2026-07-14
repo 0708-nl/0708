@@ -1,0 +1,240 @@
+:root {
+  --bg: #060606;
+  --panel: #101010;
+  --panel-2: #161616;
+  --text: #f7f3eb;
+  --muted: #9e988d;
+  --accent: #ff3b2d;
+  --accent-2: #b8ff4d;
+  --border: rgba(255, 255, 255, 0.11);
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(255, 59, 45, 0.16), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(184, 255, 77, 0.12), transparent 22%),
+    var(--bg);
+  color: var(--text);
+}
+
+.site-header {
+  position: sticky;
+  top: 1rem;
+  width: min(100% - 1.5rem, 1160px);
+  margin: 1rem auto 0;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(8, 8, 8, 0.8);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+}
+
+main {
+  margin: 1.5rem auto 0;
+  padding-bottom: 4rem;
+}
+
+.hero-copy,
+.track-card,
+.feature-card,
+.problem-card,
+.show-card,
+.contact-form,
+.press-note,
+.contact-note,
+.show-empty,
+.page-card,
+.profile-card,
+.content-card,
+.timeline-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 24px;
+}
+
+.hero-copy {
+  padding: 1.4rem;
+}
+
+.hero-visual {
+  border-radius: 30px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.btn,
+.contact-form button {
+  border-radius: 999px;
+  padding: 0.9rem 1.15rem;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+
+.btn-primary,
+.contact-form button {
+  background: linear-gradient(135deg, var(--accent), #ff6e58);
+  color: #fff;
+  border: none;
+}
+
+.btn:hover,
+.btn:focus-visible,
+.contact-form button:hover,
+.contact-form button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 59, 45, 0.18);
+}
+
+.hero-meta li {
+  border-radius: 999px;
+  background: rgba(184, 255, 77, 0.09);
+  color: var(--accent-2);
+}
+
+.section {
+  padding-top: 2.75rem;
+  scroll-margin-top: 110px;
+}
+
+.section-heading {
+  margin-bottom: 1rem;
+}
+
+.section-heading h2 {
+  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+}
+
+.spotify-panel {
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.track-card,
+.feature-card,
+.problem-card,
+.show-card {
+  padding: 1rem;
+}
+
+.track-card:hover,
+.feature-card:hover,
+.problem-card:hover,
+.show-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 59, 45, 0.32);
+}
+
+.track-meta span {
+  border-radius: 999px;
+  background: rgba(184, 255, 77, 0.08);
+  border: 1px solid rgba(184, 255, 77, 0.18);
+}
+
+.about-text,
+.note,
+.contact-copy,
+.show-card p,
+.press-note p,
+.contact-note,
+.form-status {
+  color: var(--muted);
+}
+
+.contact-form {
+  padding: 1.2rem;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: #090909;
+  color: var(--text);
+  padding: 0.9rem 1rem;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 1px solid var(--accent-2);
+}
+
+.page-shell {
+  padding: 2rem 0 4rem;
+}
+
+.page-card {
+  padding: 1.4rem;
+}
+
+.about-grid {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.profile-card,
+.content-card,
+.timeline-card {
+  padding: 1.2rem;
+}
+
+.profile-spotlight {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  background: linear-gradient(140deg, rgba(255, 59, 45, 0.14), rgba(184, 255, 77, 0.08));
+  border-radius: 24px;
+  border: 1px solid var(--border);
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.pill {
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 1rem 3rem;
+}
+
+@media (min-width: 700px) {
+  .hero {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2rem;
+  }
+
+  .track-grid,
+  .feature-grid,
+  .problem-grid,
+  .show-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .track-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

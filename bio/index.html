@@ -15,6 +15,7 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://0708.nl/bio/" />
     <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="/theme.css" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -32,15 +33,32 @@
       </nav>
     </header>
 
-    <main>
-      <section class="section about-section" id="about">
+    <main class="page-shell">
+      <section class="page-card reveal" id="about">
         <div class="section-heading">
           <p class="eyebrow">About</p>
           <h1>About Me</h1>
         </div>
 
         <div class="about-grid">
-          <div class="about-content">
+          <div class="profile-card">
+            <div class="profile-spotlight" aria-hidden="true">
+              <svg width="220" height="220" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100%" height="100%" rx="24" fill="#0e0e0e" />
+                <g fill="#2a2a2a">
+                  <circle cx="120" cy="92" r="42" />
+                  <rect x="56" y="148" width="128" height="54" rx="12" />
+                </g>
+              </svg>
+            </div>
+            <div class="pill-row" aria-label="Bio themes">
+              <span class="pill">Calm</span>
+              <span class="pill">Music</span>
+              <span class="pill">Craft</span>
+            </div>
+          </div>
+
+          <div class="content-card">
             <div id="generated-bio">
               <div class="bio-theme">Theme: Learning, Gaming, Music</div>
               <div class="about-text generated-bio-body">
