@@ -82,10 +82,12 @@
   letter-spacing: 0.14em;
 }
 
-.profile-spotlight svg {
-  width: min(78%, 280px);
-  height: auto;
-  opacity: 0.8;
+.profile-spotlight img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+  object-position: center;
   filter: drop-shadow(0 22px 40px rgba(0, 0, 0, 0.5));
 }
 
@@ -209,6 +211,10 @@
   }
 
   .profile-spotlight {
+    min-height: 320px;
+  }
+
+  .profile-spotlight img {
     min-height: 320px;
   }
 }
