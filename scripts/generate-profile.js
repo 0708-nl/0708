@@ -3,8 +3,8 @@
 //   npm install sharp
 //   node scripts/generate-profile.js
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const sharp = require('sharp');
 
 const src = path.join(__dirname, '..', 'bio', 'input.jpg');

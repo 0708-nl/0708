@@ -96,7 +96,7 @@ const FALLBACK_TRACKS = [
 ];
 
 let tokenCache = { accessToken: null, expiresAt: 0 };
-let tracksCache = { tracks: null, expiresAt: 0 };
+let tracksCache = { tracks: null, expiresAt: 0, stale: false };
 
 class SpotifyError extends Error {
   constructor(message, status = 502, retryAfter = null) {
@@ -145,7 +145,9 @@ async function getAccessToken() {
 async function spotifyGet(path, params = {}, retry = true) {
   const token = await getAccessToken();
   const url = new URL(`https://api.spotify.com/v1${path}`);
-  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, String(value)));
+  Object.entries(params).forEach(([key, value]) => {
+    url.searchParams.set(key, String(value));
+  });
 
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
@@ -228,13 +230,24 @@ export async function GET() {
   try {
     if (tracksCache.tracks && Date.now() < tracksCache.expiresAt) {
       return Response.json(
-        { artistId: ARTIST_ID, tracks: tracksCache.tracks },
-        { headers: { 'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=86400' } }
+        {
+          artistId: ARTIST_ID,
+          tracks: tracksCache.tracks,
+          ...(tracksCache.stale ? { stale: true } : {})
+        },
+        {
+          headers: {
+            'Cache-Control': tracksCache.stale
+              ? 'public, s-maxage=300, stale-while-revalidate=86400'
+              : 'public, s-maxage=900, stale-while-revalidate=86400',
+            ...(tracksCache.stale ? { 'X-Track-Source': 'fallback' } : {})
+          }
+        }
       );
     }
 
     const tracks = await fetchLatestTracks();
-    tracksCache = { tracks, expiresAt: Date.now() + CACHE_TTL_MS };
+    tracksCache = { tracks, expiresAt: Date.now() + CACHE_TTL_MS, stale: false };
 
     return Response.json(
       { artistId: ARTIST_ID, tracks },
@@ -247,7 +260,8 @@ export async function GET() {
     // Never leave the public page empty because Spotify or its credentials failed.
     tracksCache = {
       tracks: FALLBACK_TRACKS,
-      expiresAt: Date.now() + 5 * 60 * 1000
+      expiresAt: Date.now() + 5 * 60 * 1000,
+      stale: true
     };
 
     return Response.json(

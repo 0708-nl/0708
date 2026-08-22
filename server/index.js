@@ -1,13 +1,20 @@
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors');
-const path = require('path');
+const path = require('node:path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
+const fallbackTracks = require('../data/latest-tracks.json').tracks;
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.disable('x-powered-by');
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
+app.use(express.json({ limit: '20kb' }));
+app.use(express.urlencoded({ extended: false, limit: '20kb' }));
 
 const PORT = process.env.PORT || 3000;
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -19,15 +26,25 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
   console.warn('Warning: SPOTIFY_CLIENT_ID or SPOTIFY_CLIENT_SECRET not set. See .env.example');
 }
 
-let tokenCache = {
+const tokenCache = {
   accessToken: null,
   expiresAt: 0
 };
 
 const albumCache = new Map(); // trackId -> { payload, expiresAt }
 const ALBUM_CACHE_TTL = 24 * 60 * 60 * 1000; // 24h
-let latestTracksCache = { tracks: null, expiresAt: 0 };
+let latestTracksCache = { tracks: null, expiresAt: 0, stale: false };
 const LATEST_TRACKS_CACHE_TTL = 15 * 60 * 1000; // 15 minutes
+const ENQUIRY_TYPES = new Set(['booking', 'press', 'collab', 'other']);
+const HTTP_TIMEOUT = 10_000;
+
+function clean(value, maxLength) {
+  return String(value || '').trim().slice(0, maxLength);
+}
+
+function isEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
 
 async function fetchAccessToken() {
   if (!CLIENT_ID || !CLIENT_SECRET) {
@@ -49,7 +66,8 @@ async function fetchAccessToken() {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           Authorization: `Basic ${creds}`
-        }
+        },
+        timeout: HTTP_TIMEOUT
       }
     );
 
@@ -67,7 +85,8 @@ async function spotifyRequest(path, opts = {}) {
   try {
     return await axios.get(`https://api.spotify.com/v1${path}`, {
       headers: { Authorization: `Bearer ${token}` },
-      params: opts.params || {}
+      params: opts.params || {},
+      timeout: HTTP_TIMEOUT
     });
   } catch (err) {
     if (err.response && err.response.status === 401) {
@@ -76,7 +95,8 @@ async function spotifyRequest(path, opts = {}) {
       const token2 = await fetchAccessToken();
       return await axios.get(`https://api.spotify.com/v1${path}`, {
         headers: { Authorization: `Bearer ${token2}` },
-        params: opts.params || {}
+        params: opts.params || {},
+        timeout: HTTP_TIMEOUT
       });
     }
     throw err;
@@ -145,11 +165,21 @@ app.get('/api/track', async (req, res) => {
   }
 });
 
-app.get('/api/latest-tracks', async (req, res) => {
+app.get('/api/latest-tracks', async (_req, res) => {
   try {
     if (latestTracksCache.tracks && Date.now() < latestTracksCache.expiresAt) {
-      res.setHeader('Cache-Control', 'public, max-age=300');
-      return res.json({ artistId: ARTIST_ID, tracks: latestTracksCache.tracks });
+      res.setHeader(
+        'Cache-Control',
+        latestTracksCache.stale
+          ? 'public, max-age=300, stale-while-revalidate=86400'
+          : 'public, max-age=300'
+      );
+      if (latestTracksCache.stale) res.setHeader('X-Track-Source', 'fallback');
+      return res.json({
+        artistId: ARTIST_ID,
+        tracks: latestTracksCache.tracks,
+        ...(latestTracksCache.stale ? { stale: true } : {})
+      });
     }
 
     const releasesResponse = await spotifyRequest(`/artists/${encodeURIComponent(ARTIST_ID)}/albums`, {
@@ -209,7 +239,8 @@ app.get('/api/latest-tracks', async (req, res) => {
 
     latestTracksCache = {
       tracks: uniqueTracks,
-      expiresAt: Date.now() + LATEST_TRACKS_CACHE_TTL
+      expiresAt: Date.now() + LATEST_TRACKS_CACHE_TTL,
+      stale: false
     };
 
     res.setHeader('Cache-Control', 'public, max-age=300');
@@ -221,7 +252,14 @@ app.get('/api/latest-tracks', async (req, res) => {
       return res.status(429).json({ error: 'Rate limited by Spotify', retryAfter });
     }
     console.error('Latest tracks API error', err?.response?.data || err.message);
-    res.status(status).json({ error: status === 503 ? err.message : 'Unable to load latest Spotify tracks' });
+    latestTracksCache = {
+      tracks: fallbackTracks,
+      expiresAt: Date.now() + 5 * 60 * 1000,
+      stale: true
+    };
+    res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=86400');
+    res.setHeader('X-Track-Source', 'fallback');
+    res.json({ artistId: ARTIST_ID, tracks: fallbackTracks, stale: true });
   }
 });
 
@@ -235,27 +273,78 @@ app.post('/api/contact', async (req, res) => {
       return res.json({ ok: true });
     }
 
-    const name = String(formData.name || '').trim();
-    const email = String(formData.email || '').trim();
-    const enquiryType = String(formData.enquiryType || '').trim();
-    const message = String(formData.message || '').trim();
+    const name = clean(formData.name, 120);
+    const email = clean(formData.email, 254);
+    const enquiryType = clean(formData.enquiryType, 60);
+    const message = clean(formData.message, 5_000);
+    const organisation = clean(formData.organisation, 200);
+    const eventName = clean(formData.eventName, 200);
+    const eventDate = clean(formData.eventDate, 50);
+    const venue = clean(formData.venue, 200);
+    const cityCountry = clean(formData.cityCountry, 200);
+    const capacity = clean(formData.capacity, 20);
+    const projectName = clean(formData.projectName, 200);
+    const projectType = clean(formData.projectType, 60);
+    const subject = clean(formData.subject, 200);
 
-    if (!name || !email || !enquiryType || !message) {
-      return res.status(400).json({ ok: false, error: 'Missing required contact fields' });
+    if (!name || !isEmail(email) || !ENQUIRY_TYPES.has(enquiryType) || !message) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Please complete required fields with a valid email address'
+      });
     }
 
-    // Build urlencoded body
-    const params = new URLSearchParams();
-    Object.keys(formData).forEach((k) => {
-      if (formData[k] !== undefined && formData[k] !== null) params.append(k, formData[k]);
-    });
-    params.set('_subject', `0708 website: ${enquiryType}`);
+    const missingEnquiryDetails =
+      (enquiryType === 'booking' &&
+        (!organisation || !eventName || !eventDate || !venue || !cityCountry || !capacity)) ||
+      (enquiryType === 'collab' && (!projectName || !projectType)) ||
+      (enquiryType === 'press' && !organisation) ||
+      (enquiryType === 'other' && !subject);
 
-    const response = await axios.post('https://formsubmit.co/contact@0708.nl', params.toString(), {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      maxRedirects: 0,
-      validateStatus: (s) => s >= 200 && s < 400
+    if (missingEnquiryDetails) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Please complete the required enquiry details'
+      });
+    }
+
+    const payload = {
+      name,
+      email,
+      enquiryType,
+      organisation,
+      eventName,
+      eventDate,
+      venue,
+      cityCountry,
+      capacity,
+      budget: clean(formData.budget, 200),
+      projectName,
+      projectType,
+      deadline: clean(formData.deadline, 50),
+      subject,
+      message,
+      _subject: `0708 website: ${enquiryType}`,
+      _template: 'table',
+      _captcha: 'false'
+    };
+    const params = new URLSearchParams();
+    Object.entries(payload).forEach(([key, value]) => {
+      params.append(key, value);
     });
+
+    const response = await axios.post(
+      'https://formsubmit.co/ajax/contact@0708.nl',
+      params.toString(),
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        timeout: HTTP_TIMEOUT,
+        validateStatus: (responseStatus) => responseStatus >= 200 && responseStatus < 300
+      }
+    );
 
     // FormSubmit often responds with a redirect — treat 200-399 as success
     res.json({ ok: true, status: response.status });
@@ -266,15 +355,19 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (_req, res) => {
   res.json({ ok: true });
 });
 
 // Serve the website and API from the same process in production.
 const publicDirectory = path.resolve(__dirname, '..');
-app.use('/server', (req, res) => {
+app.use(['/api', '/server', '/scripts', '/.github'], (_req, res) => {
   res.status(404).end();
 });
+app.get(
+  ['/package.json', '/pnpm-lock.yaml', '/README*', '/about-me.js', '/spotify.js'],
+  (_req, res) => res.status(404).end()
+);
 app.use(
   express.static(publicDirectory, {
     dotfiles: 'deny',
@@ -288,6 +381,16 @@ app.use(
     }
   })
 );
+
+app.use((error, _req, res, next) => {
+  if (error?.type === 'entity.too.large') {
+    return res.status(413).json({ ok: false, error: 'Request is too large' });
+  }
+  if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
+    return res.status(400).json({ ok: false, error: 'Invalid JSON body' });
+  }
+  next(error);
+});
 
 app.listen(PORT, () => {
   console.log(`0708 website running on http://localhost:${PORT}`);

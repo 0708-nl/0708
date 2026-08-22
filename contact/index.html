@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact 0708 | Bookings & Collaborations</title>
+    <title>Contact 0708 | Bookings &amp; Collaborations</title>
     <meta
       name="description"
       content="Contact 0708 for bookings, collaborations, press inquiries, and availability."
@@ -13,9 +13,9 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css?v=6" />
-    <link rel="stylesheet" href="/theme.css?v=6" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=IBM+Plex+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css?v=7" />
+    <link rel="stylesheet" href="/theme.css?v=7" />
   </head>
   <body class="contact-page">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -29,8 +29,9 @@
         <span class="nav-toggle-line" aria-hidden="true"></span>
       </button>
       <nav class="site-nav" id="site-nav" aria-label="Main navigation">
-        <a href="/bio/">Bio</a>
-        <a href="/hard-techno-artist/">Hard Techno</a>
+        <a href="/">Home</a>
+        <a href="/music/">Music</a>
+        <a href="/bio/">About</a>
         <a href="/contact/" aria-current="page">Contact</a>
       </nav>
     </header>
@@ -42,22 +43,22 @@
         </div>
 
         <p class="contact-intro">
-          For bookings, collaborations, press inquiries, and availability. Send a message below or email
-          <a href="mailto:contact@0708.nl">contact@0708.nl</a>.
+          Choose what you want to discuss. The form will then ask only for the details needed for that enquiry.
         </p>
 
         <form
           id="contactForm"
           class="contact-form"
           data-ajax="true"
-          action="/api/contact"
+          action="https://formsubmit.co/contact@0708.nl"
+          data-api-endpoint="/api/contact"
           method="POST"
           accept-charset="UTF-8"
         >
           <input type="hidden" name="_subject" value="New message from 0708 website" />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_next" value="/contact/" />
+          <input type="hidden" name="_next" value="https://0708.nl/contact/?sent=1" />
 
           <!-- Honeypot for bots (hidden from users) -->
           <label class="form-honeypot" aria-hidden="true" style="display:none;">
@@ -65,70 +66,119 @@
             <input type="text" name="hp" tabindex="-1" autocomplete="off" />
           </label>
 
-          <label>
-            Name
-            <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
-          </label>
-
-          <label>
-            Email
-            <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
-          </label>
-
-          <label>
-            Organisation / Promoter
-            <input type="text" name="organisation" placeholder="Promoter or organisation" autocomplete="organization" />
-          </label>
-
-          <label>
-            Event name
-            <input type="text" name="eventName" placeholder="Event title (optional)" />
-          </label>
-
-          <label>
-            Date (approx.)
-            <input type="date" name="eventDate" />
-          </label>
-
-          <label>
-            Venue
-            <input type="text" name="venue" placeholder="Venue name" />
-          </label>
-
-          <label>
-            City, Country
-            <input type="text" name="cityCountry" placeholder="City, Country" />
-          </label>
-
-          <label>
-            Capacity
-            <input type="number" name="capacity" min="0" placeholder="Estimated capacity" />
-          </label>
-
-          <label>
-            Enquiry type
+          <label class="enquiry-type-field">
+            What would you like to discuss?
             <select name="enquiryType" required>
-              <option value="">Select…</option>
+              <option value="">Choose an enquiry type…</option>
               <option value="booking">Booking / Performance</option>
-              <option value="press">Press / Promo</option>
               <option value="collab">Collaboration</option>
-              <option value="other">Other</option>
+              <option value="press">Press / Promo</option>
+              <option value="other">Something else</option>
             </select>
           </label>
 
-          <label>
-            Budget / Offer (optional)
-            <input type="text" name="budget" placeholder="EUR / offer details" />
-          </label>
+          <div class="contact-details" data-contact-details hidden>
+            <div class="contact-form-grid">
+              <label>
+                Your name
+                <input type="text" name="name" placeholder="Full name" autocomplete="name" maxlength="120" required />
+              </label>
 
-          <label>
-            Message
-            <textarea name="message" rows="6" placeholder="Your message" required></textarea>
-          </label>
+              <label>
+                Email
+                <input type="email" name="email" placeholder="you@example.com" autocomplete="email" maxlength="254" required />
+              </label>
 
-          <button type="submit">Send inquiry</button>
+              <fieldset class="enquiry-fields" data-enquiry-section="booking" hidden>
+                <legend>Booking details</legend>
+                <label>
+                  Promoter / Organisation
+                  <input type="text" name="organisation" placeholder="Who is organising the event?" autocomplete="organization" maxlength="200" data-required />
+                </label>
+                <label>
+                  Event name
+                  <input type="text" name="eventName" placeholder="Event title" maxlength="200" data-required />
+                </label>
+                <label>
+                  Event date
+                  <input type="date" name="eventDate" data-required />
+                </label>
+                <label>
+                  Venue
+                  <input type="text" name="venue" placeholder="Venue name" maxlength="200" data-required />
+                </label>
+                <label>
+                  City, Country
+                  <input type="text" name="cityCountry" placeholder="City, Country" maxlength="200" data-required />
+                </label>
+                <label>
+                  Expected capacity
+                  <input type="number" name="capacity" min="1" max="10000000" placeholder="Estimated audience" data-required />
+                </label>
+                <label class="wide-field">
+                  Budget / Offer <span>(optional)</span>
+                  <input type="text" name="budget" placeholder="EUR or offer details" maxlength="200" />
+                </label>
+              </fieldset>
+
+              <fieldset class="enquiry-fields" data-enquiry-section="collab" hidden>
+                <legend>Collaboration details</legend>
+                <label>
+                  Project name
+                  <input type="text" name="projectName" placeholder="Working title" maxlength="200" data-required />
+                </label>
+                <label>
+                  Collaboration type
+                  <select name="projectType" data-required>
+                    <option value="">Choose one…</option>
+                    <option value="track">Track / Remix</option>
+                    <option value="event">Event / Live project</option>
+                    <option value="content">Content / Creative project</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+                <label>
+                  Preferred deadline <span>(optional)</span>
+                  <input type="date" name="deadline" />
+                </label>
+                <label>
+                  Budget <span>(optional)</span>
+                  <input type="text" name="budget" placeholder="EUR or project terms" maxlength="200" />
+                </label>
+              </fieldset>
+
+              <fieldset class="enquiry-fields" data-enquiry-section="press" hidden>
+                <legend>Press details</legend>
+                <label>
+                  Publication / Platform
+                  <input type="text" name="organisation" placeholder="Publication, channel, or platform" autocomplete="organization" maxlength="200" data-required />
+                </label>
+                <label>
+                  Deadline <span>(optional)</span>
+                  <input type="date" name="deadline" />
+                </label>
+              </fieldset>
+
+              <fieldset class="enquiry-fields" data-enquiry-section="other" hidden>
+                <legend>General enquiry</legend>
+                <label class="wide-field">
+                  Subject
+                  <input type="text" name="subject" placeholder="What is this about?" maxlength="200" data-required />
+                </label>
+              </fieldset>
+
+              <label class="message-field">
+                <span data-message-label>Message</span>
+                <textarea name="message" rows="6" placeholder="Tell me the relevant details" maxlength="5000" required></textarea>
+              </label>
+
+              <button type="submit">Send enquiry</button>
+              <p class="contact-note">Your details are used only to respond to this enquiry. See the <a href="/privacy/">Privacy Policy</a> for more information.</p>
+            </div>
+          </div>
+
           <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
-          <p class="contact-note">Contact data is used to respond to your enquiry and will be retained only as needed to process it. See the <a href="/privacy/">Privacy Policy</a> for details on data handling and your rights.</p>
+          <noscript><p class="contact-note">JavaScript is required for the tailored form. You can also email <a href="mailto:contact@0708.nl">contact@0708.nl</a>.</p></noscript>
         </form>
       </section>
     </main>
@@ -146,6 +196,6 @@
       <p class="footer-meta">© 2026 0708. All rights reserved.</p>
     </footer>
 
-    <script src="/script.js?v=6"></script>
+    <script src="/script.js?v=7"></script>
   </body>
 </html>

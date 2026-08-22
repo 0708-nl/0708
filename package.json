@@ -4,10 +4,10 @@
   "scripts": {
     "start": "npm --prefix server start",
     "preview:vercel": "node scripts/preview-vercel.mjs",
-    "check": "node --check script.js && node --check server/index.js && node --check api/latest-tracks.mjs && node --check api/contact.mjs",
+    "check": "node --check script.js && node --check spotify.js && node --check about-me.js && node --check server/index.js && node --check api/latest-tracks.mjs && node --check api/contact.mjs && node --check scripts/generate-profile.js && node --check scripts/preview-vercel.mjs",
     "gen-profile": "node scripts/generate-profile.js"
   },
   "devDependencies": {
-    "sharp": "^0.32.1"
+    "sharp": "^0.35.3"
   }
 }

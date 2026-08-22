@@ -82,6 +82,12 @@
   letter-spacing: 0.14em;
 }
 
+.profile-spotlight picture {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .profile-spotlight img {
   width: 100%;
   height: 100%;
@@ -200,9 +206,69 @@
   font-size: clamp(1rem, 1.8vw, 1.2rem);
 }
 
+.release-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.release-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.release-card:hover,
+.release-card:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(255, 61, 46, 0.48);
+  background: var(--surface-hover);
+}
+
+.release-card > a {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.release-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #080808;
+}
+
+.release-body {
+  flex: 1;
+  padding: 1.1rem;
+}
+
+.release-body h3 {
+  margin-bottom: 0.75rem;
+  line-height: 1.1;
+}
+
+.release-meta {
+  margin: 0;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+
+.music-page .about-text,
+.privacy-page .about-text {
+  margin-inline: auto;
+}
+
 @media (max-width: 800px) {
   .about-grid,
-  .landing-copy {
+  .landing-copy,
+  .release-grid {
     grid-template-columns: 1fr;
   }
 
@@ -230,5 +296,185 @@
 
   .page-card h1 {
     font-size: clamp(3.3rem, 18vw, 5rem);
+  }
+}
+
+/* Clean secondary-page layouts */
+.page-shell {
+  padding-top: clamp(4.5rem, 9vw, 7rem);
+}
+
+.page-card {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.page-card h1 {
+  max-width: 12ch;
+  margin-inline: auto;
+  font-size: clamp(3.4rem, 9vw, 7rem);
+  letter-spacing: -0.065em;
+}
+
+.release-grid {
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.release-card {
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  box-shadow: none;
+}
+
+.release-card:hover,
+.release-card:focus-within {
+  transform: none;
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.release-card > a {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+}
+
+.release-card img {
+  aspect-ratio: 1;
+}
+
+.release-body {
+  padding: 1.5rem 2rem;
+}
+
+.release-body h3 {
+  font-size: clamp(1.35rem, 3vw, 2.4rem);
+}
+
+.catalogue-note {
+  margin: 1.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.profile-card,
+.content-card {
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.contact-card {
+  width: min(100%, 860px);
+}
+
+.contact-form {
+  display: block;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.enquiry-type-field {
+  display: grid;
+  gap: 0.65rem;
+  font-size: 0.78rem !important;
+}
+
+.enquiry-type-field select {
+  min-height: 58px;
+  border-color: var(--border-strong);
+  font-size: 0.9rem;
+}
+
+.contact-details {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.contact-details[hidden],
+.enquiry-fields[hidden] {
+  display: none !important;
+}
+
+.contact-form-grid,
+.enquiry-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.enquiry-fields {
+  grid-column: 1 / -1;
+  padding: 1.5rem 0 0;
+  margin: 0.5rem 0 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.enquiry-fields legend {
+  padding: 0 0.75rem 0 0;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.contact-form label span,
+.enquiry-fields label span {
+  color: #77736c;
+  font-size: 0.62rem;
+}
+
+.wide-field,
+.message-field,
+.contact-form-grid > button,
+.contact-form-grid > .contact-note {
+  grid-column: 1 / -1;
+}
+
+.message-field {
+  margin-top: 0.5rem;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  border-radius: 6px;
+  background: #0b0b0b;
+}
+
+.form-status {
+  margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+  .release-card > a {
+    grid-template-columns: 108px minmax(0, 1fr);
+  }
+
+  .release-body {
+    padding: 1rem;
+  }
+
+  .release-body h3 {
+    font-size: 1rem;
+  }
+
+  .contact-form-grid,
+  .enquiry-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .wide-field,
+  .message-field,
+  .contact-form-grid > button,
+  .contact-form-grid > .contact-note {
+    grid-column: 1;
   }
 }

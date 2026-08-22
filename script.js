@@ -21,7 +21,7 @@
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && header.classList.contains('nav-open')) {
         closeNavigation();
         navToggle.focus();
       }
@@ -59,12 +59,61 @@
       { threshold: 0.12 }
     );
 
-    revealItems.forEach((item) => revealObserver.observe(item));
+    revealItems.forEach((item) => {
+      revealObserver.observe(item);
+    });
   }
 
   const contactForm = document.getElementById('contactForm');
   const formStatus = document.getElementById('formStatus');
   const submitButton = contactForm?.querySelector('button[type="submit"]');
+  const enquirySelect = contactForm?.querySelector('[name="enquiryType"]');
+  const contactDetails = contactForm?.querySelector('[data-contact-details]');
+  const enquirySections = contactForm?.querySelectorAll('[data-enquiry-section]') || [];
+  const messageLabel = contactForm?.querySelector('[data-message-label]');
+
+  const enquiryMessageLabels = {
+    booking: 'Booking notes',
+    collab: 'Collaboration proposal',
+    press: 'Press request',
+    other: 'Message'
+  };
+
+  const updateEnquiryFields = () => {
+    if (!enquirySelect || !contactDetails) return;
+
+    const selectedType = enquirySelect.value;
+    const hasSelection = Boolean(selectedType);
+    contactDetails.hidden = !hasSelection;
+
+    contactDetails.querySelectorAll('input, select, textarea, button').forEach((control) => {
+      control.disabled = !hasSelection;
+    });
+
+    enquirySections.forEach((section) => {
+      const isActive = hasSelection && section.dataset.enquirySection === selectedType;
+      section.hidden = !isActive;
+      section.querySelectorAll('input, select, textarea').forEach((control) => {
+        control.disabled = !isActive;
+        control.required = isActive && control.hasAttribute('data-required');
+      });
+    });
+
+    if (messageLabel) {
+      messageLabel.textContent = enquiryMessageLabels[selectedType] || 'Message';
+    }
+  };
+
+  if (enquirySelect && contactDetails) {
+    enquirySelect.addEventListener('change', updateEnquiryFields);
+    updateEnquiryFields();
+  }
+
+  if (contactForm && formStatus && new URLSearchParams(window.location.search).get('sent') === '1') {
+    formStatus.textContent = 'Thanks — your message was sent.';
+    formStatus.className = 'form-status success';
+    window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+  }
 
   if (contactForm && formStatus && contactForm.dataset.ajax === 'true') {
     contactForm.addEventListener('submit', async (event) => {
@@ -78,13 +127,11 @@
       }
 
       const formData = new FormData(contactForm);
-      const name = String(formData.get('name') || '').trim();
-      const email = String(formData.get('email') || '').trim();
-      const subject = String(formData.get('subject') || '').trim();
-      const message = String(formData.get('message') || '').trim();
       const payload = new URLSearchParams();
 
-      formData.forEach((value, key) => payload.append(key, String(value)));
+      formData.forEach((value, key) => {
+        payload.append(key, String(value));
+      });
 
       if (submitButton) {
         submitButton.disabled = true;
@@ -95,7 +142,7 @@
       formStatus.className = 'form-status';
 
       try {
-        const response = await fetch('/api/contact', {
+        const response = await fetch(contactForm.dataset.apiEndpoint || '/api/contact', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -110,138 +157,20 @@
         }
 
         contactForm.reset();
+        updateEnquiryFields();
         formStatus.textContent = 'Thanks — your message was sent.';
         formStatus.className = 'form-status success';
-      } catch (error) {
-        formStatus.textContent = 'Switching to backup form delivery...';
+      } catch {
+        formStatus.textContent = 'Switching to backup form delivery…';
         formStatus.className = 'form-status';
         HTMLFormElement.prototype.submit.call(contactForm);
       } finally {
         if (submitButton) {
           submitButton.disabled = false;
-          submitButton.textContent = 'Send inquiry';
+          submitButton.textContent = 'Send enquiry';
         }
       }
     });
   }
 
-  const latestTracks = document.getElementById('latestTracks');
-
-  const formatReleaseDate = (date, precision) => {
-    if (!date) return 'Release date unavailable';
-    if (precision === 'year') return date;
-
-    const normalizedDate = precision === 'month' ? `${date}-01` : date;
-    const parsedDate = new Date(`${normalizedDate}T00:00:00Z`);
-    if (Number.isNaN(parsedDate.getTime())) return date;
-
-    return parsedDate.toLocaleDateString('en-GB', {
-      day: precision === 'day' ? 'numeric' : undefined,
-      month: 'short',
-      year: 'numeric',
-      timeZone: 'UTC'
-    });
-  };
-
-  const createTrackCard = (track) => {
-    const card = document.createElement('a');
-    card.className = 'track-card spotify-track-card';
-    card.href = track.spotifyUrl;
-    card.target = '_blank';
-    card.rel = 'noopener noreferrer';
-    card.setAttribute('aria-label', `Play ${track.title} by ${track.artists.join(', ')} on Spotify`);
-
-    if (track.artwork?.url) {
-      const artwork = document.createElement('img');
-      artwork.className = 'track-artwork';
-      artwork.src = track.artwork.url;
-      artwork.alt = `${track.album} album cover`;
-      artwork.loading = 'lazy';
-      artwork.decoding = 'async';
-      if (track.artwork.width) artwork.width = track.artwork.width;
-      if (track.artwork.height) artwork.height = track.artwork.height;
-      card.appendChild(artwork);
-    } else {
-      const artworkFallback = document.createElement('div');
-      artworkFallback.className = 'track-artwork track-artwork-fallback';
-      artworkFallback.setAttribute('aria-hidden', 'true');
-      artworkFallback.textContent = '0708';
-      card.appendChild(artworkFallback);
-    }
-
-    const body = document.createElement('div');
-    body.className = 'track-card-body';
-
-    const title = document.createElement('h3');
-    title.textContent = track.title;
-
-    const artist = document.createElement('p');
-    artist.className = 'track-artist';
-    artist.textContent = track.artists.join(', ');
-
-    const album = document.createElement('p');
-    album.className = 'track-album';
-    album.textContent = track.album;
-
-    const releaseDate = document.createElement('time');
-    releaseDate.className = 'track-release-date';
-    releaseDate.dateTime = track.releaseDate;
-    releaseDate.textContent = formatReleaseDate(track.releaseDate, track.releaseDatePrecision);
-
-    const spotifyLabel = document.createElement('span');
-    spotifyLabel.className = 'spotify-link-label';
-    spotifyLabel.textContent = 'Play on Spotify ↗';
-
-    body.append(title, artist, album, releaseDate, spotifyLabel);
-    card.appendChild(body);
-    return card;
-  };
-
-  const loadLatestTracks = async () => {
-    if (!latestTracks) return;
-
-    try {
-      const sources = ['/api/latest-tracks', '/data/latest-tracks.json'];
-      let data = null;
-
-      for (const source of sources) {
-        try {
-          const response = await fetch(source, {
-            headers: { Accept: 'application/json' }
-          });
-          if (!response.ok) continue;
-
-          const candidate = await response.json();
-          if (Array.isArray(candidate.tracks) && candidate.tracks.length > 0) {
-            data = candidate;
-            break;
-          }
-        } catch {
-          // Try the static last-known-good release list next.
-        }
-      }
-
-      if (!data) throw new Error('No track source is available');
-      if (!Array.isArray(data.tracks) || data.tracks.length === 0) {
-        throw new Error('Spotify returned no recent tracks');
-      }
-
-      latestTracks.replaceChildren(...data.tracks.slice(0, 5).map(createTrackCard));
-      latestTracks.setAttribute('aria-busy', 'false');
-    } catch (error) {
-      const message = document.createElement('p');
-      const link = document.createElement('a');
-      message.className = 'track-error';
-      message.textContent = 'Latest releases are temporarily unavailable. ';
-      link.href = 'https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh';
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = 'Open 0708 on Spotify.';
-      message.appendChild(link);
-      latestTracks.replaceChildren(message);
-      latestTracks.setAttribute('aria-busy', 'false');
-    }
-  };
-
-  loadLatestTracks();
 })();

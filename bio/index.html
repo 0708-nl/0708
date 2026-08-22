@@ -11,9 +11,9 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css?v=6" />
-    <link rel="stylesheet" href="/theme.css?v=6" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=IBM+Plex+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css?v=7" />
+    <link rel="stylesheet" href="/theme.css?v=7" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -43,9 +43,19 @@
         <div class="about-grid">
           <div class="profile-card">
             <div class="profile-spotlight">
-              <img src="/bio/pfp.jpg" alt="0708 profile picture" />
+              <picture>
+                <source srcset="/bio/pfp-900.webp" type="image/webp" />
+                <img
+                  src="/bio/pfp-900.jpg"
+                  alt="0708 profile picture"
+                  width="900"
+                  height="1200"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              </picture>
             </div>
-            <div class="pill-row" aria-label="Artist focus">
+            <div class="pill-row" role="group" aria-label="Artist focus">
               <span class="pill">Hard Techno</span>
               <span class="pill">Hardcore</span>
               <span class="pill">Club-focused</span>
@@ -62,7 +72,7 @@
 
               <p>Influences include early '90s rave and hardcore, industrial and techno scenes, and contemporary hard techno producers who prioritize physicality and drive over polish.</p>
 
-              <h2>Releases & Links</h2>
+              <h2>Releases &amp; Links</h2>
               <p>Recent releases and track previews are available on the <a href="/music/">Music</a> page. For press or performance enquiries, use the <a href="/contact/">Contact</a> form.</p>
 
               <h3>Beyond music</h3>
@@ -86,6 +96,6 @@
       <p class="footer-meta">© 2026 0708. All rights reserved.</p>
     </footer>
 
-    <script src="/script.js?v=6"></script>
+    <script src="/script.js?v=7"></script>
   </body>
 </html>

@@ -23,15 +23,14 @@ After adding or changing environment variables, redeploy the latest deployment. 
 4. Run `npm start`.
 5. Open `http://localhost:3000`.
 
-The Latest Sounds cards are loaded from `/api/latest-tracks`. Locally, the Express server reads Spotify credentials from `server/.env`; on Vercel, the serverless function reads them from the project Environment Variables.
+The release metadata API remains available at `/api/latest-tracks`. Locally, the Express server reads Spotify credentials from `server/.env`; on Vercel, the serverless function reads them from the project Environment Variables.
 
-If Spotify or its credentials are temporarily unavailable, both the function and browser fall back to `data/latest-tracks.json`, so the public Latest Sounds section remains usable.
+If Spotify or its credentials are temporarily unavailable, both server implementations fall back to `data/latest-tracks.json`.
 
 ## Content updates
 
 - Main page content: `index.html`
 - Bio page: `bio/index.html`
-- Hard-techno landing page: `hard-techno-artist/index.html`
 - Contact page: `contact/index.html`
 - Colors and layout: `styles.css`
 - Secondary-page layout: `theme.css`
