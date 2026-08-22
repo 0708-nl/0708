@@ -230,11 +230,26 @@ app.post('/api/contact', async (req, res) => {
   try {
     const formData = req.body || {};
 
+    // Honeypot: silently accept bot submissions
+    if (String(formData.hp || '').trim()) {
+      return res.json({ ok: true });
+    }
+
+    const name = String(formData.name || '').trim();
+    const email = String(formData.email || '').trim();
+    const enquiryType = String(formData.enquiryType || '').trim();
+    const message = String(formData.message || '').trim();
+
+    if (!name || !email || !enquiryType || !message) {
+      return res.status(400).json({ ok: false, error: 'Missing required contact fields' });
+    }
+
     // Build urlencoded body
     const params = new URLSearchParams();
     Object.keys(formData).forEach((k) => {
       if (formData[k] !== undefined && formData[k] !== null) params.append(k, formData[k]);
     });
+    params.set('_subject', `0708 website: ${enquiryType}`);
 
     const response = await axios.post('https://formsubmit.co/contact@0708.nl', params.toString(), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

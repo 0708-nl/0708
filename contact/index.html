@@ -50,37 +50,85 @@
           id="contactForm"
           class="contact-form"
           data-ajax="true"
-          action="https://formsubmit.co/contact@0708.nl"
+          action="/api/contact"
           method="POST"
           accept-charset="UTF-8"
         >
           <input type="hidden" name="_subject" value="New message from 0708 website" />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_next" value="https://0708.nl/contact/" />
-          <label class="form-honeypot" aria-hidden="true">
-            Company
-            <input type="text" name="company" tabindex="-1" autocomplete="off" />
+          <input type="hidden" name="_next" value="/contact/" />
+
+          <!-- Honeypot for bots (hidden from users) -->
+          <label class="form-honeypot" aria-hidden="true" style="display:none;">
+            Leave this field empty
+            <input type="text" name="hp" tabindex="-1" autocomplete="off" />
           </label>
+
           <label>
             Name
             <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
           </label>
+
           <label>
             Email
             <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
           </label>
+
           <label>
-            Subject
-            <input type="text" name="subject" placeholder="Subject" required />
+            Organisation / Promoter
+            <input type="text" name="organisation" placeholder="Promoter or organisation" autocomplete="organization" />
           </label>
+
+          <label>
+            Event name
+            <input type="text" name="eventName" placeholder="Event title (optional)" />
+          </label>
+
+          <label>
+            Date (approx.)
+            <input type="date" name="eventDate" />
+          </label>
+
+          <label>
+            Venue
+            <input type="text" name="venue" placeholder="Venue name" />
+          </label>
+
+          <label>
+            City, Country
+            <input type="text" name="cityCountry" placeholder="City, Country" />
+          </label>
+
+          <label>
+            Capacity
+            <input type="number" name="capacity" min="0" placeholder="Estimated capacity" />
+          </label>
+
+          <label>
+            Enquiry type
+            <select name="enquiryType" required>
+              <option value="">Select…</option>
+              <option value="booking">Booking / Performance</option>
+              <option value="press">Press / Promo</option>
+              <option value="collab">Collaboration</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+
+          <label>
+            Budget / Offer (optional)
+            <input type="text" name="budget" placeholder="EUR / offer details" />
+          </label>
+
           <label>
             Message
             <textarea name="message" rows="6" placeholder="Your message" required></textarea>
           </label>
+
           <button type="submit">Send inquiry</button>
           <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
-          <p class="contact-note">Your message is sent securely to contact@0708.nl.</p>
+          <p class="contact-note">Contact data is used to respond to your enquiry and will be retained only as needed to process it. See the <a href="/privacy/">Privacy Policy</a> for details on data handling and your rights.</p>
         </form>
       </section>
     </main>
@@ -88,9 +136,12 @@
     <footer class="site-footer">
       <p class="footer-brand">0708</p>
       <div class="footer-links">
-        <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Spotify</a>
-        <a href="https://www.instagram.com/0708nl" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="mailto:contact@0708.nl">Email</a>
+        <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer" aria-label="Open 0708 on Spotify">Spotify</a>
+        <a href="https://www.instagram.com/0708nl" target="_blank" rel="noopener noreferrer" aria-label="Open 0708 on Instagram">Instagram</a>
+        <a href="https://soundcloud.com/0708nl" target="_blank" rel="noopener noreferrer" aria-label="Open 0708 on SoundCloud">SoundCloud</a>
+        <a href="https://www.youtube.com/@0708" target="_blank" rel="noopener noreferrer" aria-label="Open 0708 on YouTube">YouTube</a>
+        <a href="mailto:contact@0708.nl" aria-label="Email contact@0708.nl">Email</a>
+        <a href="/privacy/">Privacy</a>
       </div>
       <p class="footer-meta">© 2026 0708. All rights reserved.</p>
     </footer>

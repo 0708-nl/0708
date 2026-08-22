@@ -89,8 +89,9 @@
         <span class="nav-toggle-line" aria-hidden="true"></span>
       </button>
       <nav class="site-nav" id="site-nav" aria-label="Main navigation">
-        <a href="/bio/">Bio</a>
-        <a href="/hard-techno-artist/">Hard Techno</a>
+        <a href="/">Home</a>
+        <a href="/music/">Music</a>
+        <a href="/bio/">About</a>
         <a href="/contact/">Contact</a>
       </nav>
     </header>
@@ -98,12 +99,12 @@
     <main id="main-content">
       <section class="hero" id="top">
         <div class="hero-copy reveal">
-          <p class="eyebrow">Hard techno / hardcore</p>
+          <p class="eyebrow">Hard Techno · Hardcore</p>
           <h1>0708</h1>
-          <p class="tagline">Underground hard techno artist and hardcore producer crafting raw kicks, relentless energy, and uncompromising intensity for dark rooms and late-night sets.</p>
+          <p class="tagline">Powerful, club-focused hard techno and hardcore — designed for late-night systems and intense dancefloors. Listen to recent releases, watch live material, or get in touch for bookings.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Listen on Spotify</a>
-            <a class="btn btn-secondary" href="/contact/">Book 0708</a>
+            <a class="btn btn-primary" href="/music/">Listen</a>
+            <a class="btn btn-secondary" href="/contact/">Bookings</a>
           </div>
           <ul class="hero-meta">
             <li>Underground pressure</li>
@@ -122,21 +123,30 @@
         <div class="section-heading">
           <h2>Latest Sounds</h2>
         </div>
-
         <div class="track-grid" id="latestTracks" aria-live="polite" aria-busy="true">
-          <article class="track-card track-skeleton" aria-hidden="true"></article>
-          <article class="track-card track-skeleton" aria-hidden="true"></article>
-          <article class="track-card track-skeleton" aria-hidden="true"></article>
-          <article class="track-card track-skeleton" aria-hidden="true"></article>
-          <article class="track-card track-skeleton" aria-hidden="true"></article>
+          <!-- Static fallback for non-JS users: embedded latest releases -->
+          <a class="track-card" href="https://open.spotify.com/track/5FXx35SqfEJkRvsym6VTnC" target="_blank" rel="noopener noreferrer">
+            <img class="track-artwork" src="https://i.scdn.co/image/ab67616d0000b2737383c8527275c1cb68fdd93b" alt="CRISTAL artwork" loading="lazy" decoding="async" width="640" height="640">
+            <div class="track-card-body"><h3>CRISTAL</h3><p class="track-artist">0708, Johan Derksen</p><time datetime="2026-07-09">9 Jul 2026</time><span class="spotify-link-label">Play ↗</span></div>
+          </a>
+          <a class="track-card" href="https://open.spotify.com/track/2Ak2jeZF4KCEm3JsYmTah2" target="_blank" rel="noopener noreferrer">
+            <img class="track-artwork" src="https://i.scdn.co/image/ab67616d0000b273e91df93c466a3d560a8817d9" alt="GOD DOES NOT EXIST artwork" loading="lazy" decoding="async" width="640" height="640">
+            <div class="track-card-body"><h3>GOD DOES NOT EXIST</h3><p class="track-artist">0708, Johan Derksen</p><time datetime="2026-07-08">8 Jul 2026</time><span class="spotify-link-label">Play ↗</span></div>
+          </a>
+          <a class="track-card" href="https://open.spotify.com/track/4f10MdERFl9XAvhnOByIlP" target="_blank" rel="noopener noreferrer">
+            <img class="track-artwork" src="https://i.scdn.co/image/ab67616d0000b273955426a22a25c65c9ed0b0b9" alt="sacrefice artwork" loading="lazy" decoding="async" width="640" height="640">
+            <div class="track-card-body"><h3>sacrefice</h3><p class="track-artist">0708, Johan Derksen</p><time datetime="2026-07-07">7 Jul 2026</time><span class="spotify-link-label">Play ↗</span></div>
+          </a>
+          <a class="track-card" href="https://open.spotify.com/track/1frEKMILVyyxiTs4B2e8ep" target="_blank" rel="noopener noreferrer">
+            <img class="track-artwork" src="https://i.scdn.co/image/ab67616d0000b273b580262f691dbba80ccc3ca1" alt="i could have saved u artwork" loading="lazy" decoding="async" width="640" height="640">
+            <div class="track-card-body"><h3>i could have saved u</h3><p class="track-artist">0708, Johan Derksen</p><time datetime="2026-07-04">4 Jul 2026</time><span class="spotify-link-label">Play ↗</span></div>
+          </a>
+          <a class="track-card" href="https://open.spotify.com/track/3xbnoInKBonrf6dsZFZE4P" target="_blank" rel="noopener noreferrer">
+            <img class="track-artwork" src="https://i.scdn.co/image/ab67616d0000b273ecf84c473d2ce7341dbf5016" alt="CONCRETE PULSE artwork" loading="lazy" decoding="async" width="640" height="640">
+            <div class="track-card-body"><h3>CONCRETE PULSE</h3><p class="track-artist">0708, sem wilting</p><time datetime="2026-07-02">2 Jul 2026</time><span class="spotify-link-label">Play ↗</span></div>
+          </a>
         </div>
-        <p class="spotify-attribution">
-          Release data and artwork provided by
-          <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Spotify</a>.
-        </p>
-        <noscript>
-          <p class="track-error">Enable JavaScript or <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh">open 0708 on Spotify</a> to view the latest releases.</p>
-        </noscript>
+        <p class="spotify-attribution">Release data and artwork provided by <a href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Spotify</a> and site data cache.</p>
       </section>
 
       <section id="about" class="section about reveal">

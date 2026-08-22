@@ -31,22 +31,39 @@ export async function POST(request) {
       return Response.json({ ok: false, error: 'Request is too large' }, { status: 413 });
     }
 
-    // Hidden honeypot: bots fill it, people never see it.
-    if (clean(body.company, 200)) {
+    // Hidden honeypot: if filled, silently succeed to deter bots.
+    if (clean(body.hp, 200)) {
       return Response.json({ ok: true });
     }
 
     const name = clean(body.name, 120);
     const email = clean(body.email, 254);
-    const subject = clean(body.subject, 160);
+    const enquiryType = clean(body.enquiryType, 60);
     const message = clean(body.message, 5_000);
 
-    if (!name || !isEmail(email) || !subject || !message) {
+    if (!name || !isEmail(email) || !enquiryType || !message) {
       return Response.json(
-        { ok: false, error: 'Please complete every field with a valid email address' },
+        { ok: false, error: 'Please complete required fields with a valid email address' },
         { status: 400 }
       );
     }
+
+    const payload = {
+      name,
+      email,
+      enquiryType,
+      organisation: clean(body.organisation, 200),
+      eventName: clean(body.eventName, 200),
+      eventDate: clean(body.eventDate, 50),
+      venue: clean(body.venue, 200),
+      cityCountry: clean(body.cityCountry, 200),
+      capacity: clean(body.capacity, 20),
+      budget: clean(body.budget, 200),
+      message,
+      _subject: `0708 website: ${enquiryType}`,
+      _template: 'table',
+      _captcha: 'false'
+    };
 
     const upstream = await fetch(CONTACT_ENDPOINT, {
       method: 'POST',
@@ -54,15 +71,7 @@ export async function POST(request) {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        name,
-        email,
-        subject,
-        message,
-        _subject: `0708 website: ${subject}`,
-        _template: 'table',
-        _captcha: 'false'
-      }),
+      body: JSON.stringify(payload),
       signal: AbortSignal.timeout(10_000)
     });
 
