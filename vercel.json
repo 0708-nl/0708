@@ -1,5 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/bio",
+      "destination": "https://guns.lol/0708",
+      "permanent": true
+    },
+    {
+      "source": "/bio/",
+      "destination": "https://guns.lol/0708",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
