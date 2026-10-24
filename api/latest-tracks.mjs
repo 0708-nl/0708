@@ -24,6 +24,62 @@ const CACHE_TTL_MS = 15 * 60 * 1000;
 
 const FALLBACK_TRACKS = [
   {
+    id: 'album-1kb0quTK8lTb16NUc5fwKb',
+    title: 'HARD 3 (DELUXE)',
+    artists: ['BREADY'],
+    album: 'HARD 3 (DELUXE)',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b273b7b7e7fb9ced63052683506c',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-10-16',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/album/1kb0quTK8lTb16NUc5fwKb?si=qZPL6BbVRnKX8q1YxnAKyg'
+  },
+  {
+    id: 'album-6ZUGmYatpKvXLHoSOxsqtS',
+    title: 'HARD 3',
+    artists: ['BREADY'],
+    album: 'HARD 3',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b273902b0fa3528bff85069013fa',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-07-29',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/album/6ZUGmYatpKvXLHoSOxsqtS?si=oI_7Rp2QQ8C3bNZFtAqnvA'
+  },
+  {
+    id: 'album-4Dw2DVoOMRuZRAF0jph1YO',
+    title: 'ur my idol',
+    artists: ['0708'],
+    album: 'ur my idol',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b273f037af17546fe40b5443bd80',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2026-06-18',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/album/4Dw2DVoOMRuZRAF0jph1YO?si=uNvbIX4URwuBkUt8WkBXkg'
+  },
+  {
+    id: 'album-6j7dd9guEII6ICBhPohNvc',
+    title: 'HARD',
+    artists: ['BREADY'],
+    album: 'HARD',
+    artwork: {
+      url: 'https://i.scdn.co/image/ab67616d0000b2730de4b8b9cefae354f289aab3',
+      width: 640,
+      height: 640
+    },
+    releaseDate: '2025-07-29',
+    releaseDatePrecision: 'day',
+    spotifyUrl: 'https://open.spotify.com/album/6j7dd9guEII6ICBhPohNvc?si=CMQmSHDUTlyuZTr50sAnMA'
+  },
+  {
     id: '5FXx35SqfEJkRvsym6VTnC',
     title: 'CRISTAL',
     artists: ['0708', 'Johan Derksen'],
