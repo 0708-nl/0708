@@ -376,6 +376,45 @@
   font-size: 0.82rem;
 }
 
+.catalogue-field[hidden],
+#releaseGrid[hidden],
+#popularTracksView[hidden] {
+  display: none !important;
+}
+
+.popular-tracks-view {
+  margin-top: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid rgba(255, 61, 46, 0.28);
+  background:
+    linear-gradient(115deg, rgba(255, 61, 46, 0.08), transparent 42%),
+    #0c0b0b;
+}
+
+.popular-tracks-note {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.popular-tracks-view iframe {
+  display: block;
+  width: 100%;
+  min-height: 420px;
+  border: 0;
+  border-radius: 12px;
+}
+
+.popular-tracks-link {
+  display: inline-flex;
+  margin-top: 1rem;
+  color: var(--text);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.2em;
+}
+
 .release-preview {
   justify-self: start;
   margin: 0 2rem 1rem calc(180px + 2rem);

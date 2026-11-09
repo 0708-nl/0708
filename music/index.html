@@ -51,10 +51,25 @@
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
               <option value="title">Title A–Z</option>
+              <option value="most-streamed">Most streamed</option>
             </select>
           </div>
           <p class="catalogue-count" id="catalogueCount" aria-live="polite">Showing 9 releases</p>
         </div>
+
+        <section class="popular-tracks-view" id="popularTracksView" aria-label="Most streamed tracks" hidden>
+          <p class="popular-tracks-note">Spotify’s Top Tracks list, ordered by Spotify. Exact stream counts aren’t available to the site.</p>
+          <iframe
+            id="popularTracksEmbed"
+            title="0708 Top Tracks on Spotify"
+            width="100%"
+            height="500"
+            loading="lazy"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+          <a class="popular-tracks-link" href="https://open.spotify.com/artist/3ALqcftkgIiEwVx1mdzdKh" target="_blank" rel="noopener noreferrer">Open 0708 on Spotify</a>
+        </section>
 
         <div class="release-grid" id="releaseGrid">
           <article class="release-card" data-date="2026-10-16">
@@ -171,6 +186,6 @@
       <p class="footer-meta">© 2026 0708. All rights reserved.</p>
     </footer>
 
-    <script src="/script.js?v=9"></script>
+    <script src="/script.js?v=10"></script>
   </body>
 </html>

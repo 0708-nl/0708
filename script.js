@@ -177,13 +177,29 @@
   const releaseSearch = document.getElementById('releaseSearch');
   const releaseSort = document.getElementById('releaseSort');
   const catalogueCount = document.getElementById('catalogueCount');
+  const popularTracksView = document.getElementById('popularTracksView');
+  const popularTracksEmbed = document.getElementById('popularTracksEmbed');
 
-  if (releaseGrid && releaseSearch && releaseSort && catalogueCount) {
+  if (releaseGrid && releaseSearch && releaseSort && catalogueCount && popularTracksView && popularTracksEmbed) {
     let cards = Array.from(releaseGrid.querySelectorAll('.release-card'));
     let usingSavedCatalogue = false;
     const updateCatalogue = () => {
       const query = releaseSearch.value.trim().toLocaleLowerCase();
       const sort = releaseSort.value;
+      if (sort === 'most-streamed') {
+        releaseGrid.hidden = true;
+        popularTracksView.hidden = false;
+        releaseSearch.closest('.catalogue-field').hidden = true;
+        if (!popularTracksEmbed.hasAttribute('src')) {
+          popularTracksEmbed.src = 'https://open.spotify.com/embed/artist/3ALqcftkgIiEwVx1mdzdKh?utm_source=generator&theme=0';
+        }
+        catalogueCount.textContent = 'Spotify Top Tracks · order provided by Spotify';
+        return;
+      }
+
+      releaseGrid.hidden = false;
+      popularTracksView.hidden = true;
+      releaseSearch.closest('.catalogue-field').hidden = false;
       const ordered = [...cards].sort((a, b) => {
         if (sort === 'title') {
           return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
