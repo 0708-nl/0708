@@ -27,6 +27,7 @@ try {
 }
 
 const { GET: latestTracks } = await import('../api/latest-tracks.mjs');
+const { GET: allReleases } = await import('../api/releases.mjs');
 const { POST: submitContact } = await import('../api/contact.mjs');
 
 const mimeTypes = {
@@ -69,6 +70,11 @@ createServer(async (req, res) => {
 
     if (url.pathname === '/api/latest-tracks' && req.method === 'GET') {
       await sendWebResponse(await latestTracks(), res);
+      return;
+    }
+
+    if (url.pathname === '/api/releases' && req.method === 'GET') {
+      await sendWebResponse(await allReleases(), res);
       return;
     }
 

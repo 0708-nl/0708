@@ -263,6 +263,18 @@ app.get('/api/latest-tracks', async (_req, res) => {
   }
 });
 
+app.get('/api/releases', async (_req, res) => {
+  try {
+    const { GET } = await import('../api/releases.mjs');
+    const response = await GET();
+    response.headers.forEach((value, key) => res.setHeader(key, value));
+    res.status(response.status).send(Buffer.from(await response.arrayBuffer()));
+  } catch (error) {
+    console.error('Spotify releases route failed', error.message);
+    res.status(502).json({ error: 'Could not load Spotify releases' });
+  }
+});
+
 // Proxy contact form submissions to FormSubmit (server-side forwarding avoids CORS issues)
 app.post('/api/contact', async (req, res) => {
   try {

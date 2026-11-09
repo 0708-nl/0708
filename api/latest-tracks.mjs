@@ -153,6 +153,7 @@ const FALLBACK_TRACKS = [
 
 let tokenCache = { accessToken: null, expiresAt: 0 };
 let tracksCache = { tracks: null, expiresAt: 0, stale: false };
+let releasesCache = { releases: null, expiresAt: 0, stale: false };
 
 class SpotifyError extends Error {
   constructor(message, status = 502, retryAfter = null) {
@@ -280,6 +281,88 @@ async function fetchLatestTracks() {
     })
     .slice(0, 5)
     .map(({ releaseIndex, trackNumber, ...track }) => track);
+}
+
+async function fetchAllReleases() {
+  const releases = [];
+  const seenIds = new Set();
+  let offset = 0;
+  let total = Infinity;
+
+  while (offset < total) {
+    const page = await spotifyGet(`/artists/${encodeURIComponent(ARTIST_ID)}/albums`, {
+      include_groups: 'album,single,compilation,appears_on',
+      market: SPOTIFY_MARKET,
+      limit: 10,
+      offset
+    });
+
+    for (const release of page.items || []) {
+      if (!release?.id || seenIds.has(release.id)) continue;
+      seenIds.add(release.id);
+      const artwork = release.images?.[0] || null;
+      releases.push({
+        id: release.id,
+        title: release.name,
+        artists: (release.artists || []).map((artist) => artist.name),
+        album: release.name,
+        artwork: artwork ? { url: artwork.url, width: artwork.width, height: artwork.height } : null,
+        releaseDate: release.release_date,
+        releaseDatePrecision: release.release_date_precision,
+        spotifyUrl: release.external_urls?.spotify || `https://open.spotify.com/album/${release.id}`,
+        releaseType: release.album_group || release.album_type || 'album',
+        totalTracks: release.total_tracks || 1
+      });
+    }
+
+    total = Number(page.total) || 0;
+    if (!page.items?.length) break;
+    offset += page.items.length;
+  }
+
+  return releases.sort((a, b) => {
+    const dateOrder = String(b.releaseDate || '').localeCompare(String(a.releaseDate || ''));
+    return dateOrder || a.title.localeCompare(b.title);
+  });
+}
+
+export async function GET_RELEASES() {
+  try {
+    if (releasesCache.releases && Date.now() < releasesCache.expiresAt) {
+      return Response.json(
+        {
+          artistId: ARTIST_ID,
+          releases: releasesCache.releases,
+          ...(releasesCache.stale ? { stale: true } : {})
+        },
+        { headers: { 'Cache-Control': releasesCache.stale
+          ? 'public, s-maxage=300, stale-while-revalidate=86400'
+          : 'public, s-maxage=900, stale-while-revalidate=86400' } }
+      );
+    }
+
+    const releases = await fetchAllReleases();
+    releasesCache = { releases, expiresAt: Date.now() + CACHE_TTL_MS, stale: false };
+    return Response.json(
+      { artistId: ARTIST_ID, releases },
+      { headers: { 'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=86400' } }
+    );
+  } catch (error) {
+    const status = error instanceof SpotifyError ? error.status : 502;
+    console.error(`Spotify releases function failed with ${status}:`, error.message);
+
+    const fallbackReleases = FALLBACK_TRACKS.map((release) => ({
+      ...release,
+      id: release.id.replace(/^album-/, ''),
+      releaseType: release.id.startsWith('album-') ? 'album' : 'single',
+      totalTracks: 1
+    }));
+    releasesCache = { releases: fallbackReleases, expiresAt: Date.now() + 5 * 60 * 1000, stale: true };
+    return Response.json(
+      { artistId: ARTIST_ID, releases: fallbackReleases, stale: true },
+      { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=86400', 'X-Release-Source': 'fallback' } }
+    );
+  }
 }
 
 export async function GET() {

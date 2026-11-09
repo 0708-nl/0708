@@ -4,7 +4,7 @@ Responsive artist website with native Vercel Functions for Spotify metadata and 
 
 ## Deploy on Vercel
 
-Vercel automatically deploys the files in `api/` as `/api/latest-tracks` and `/api/contact`.
+Vercel automatically deploys the files in `api/` as `/api/latest-tracks`, `/api/releases`, and `/api/contact`.
 
 Before redeploying, add these Environment Variables in **Vercel Project > Settings > Environment Variables** for Production (and Preview if needed):
 
@@ -23,7 +23,7 @@ After adding or changing environment variables, redeploy the latest deployment. 
 4. Run `npm start`.
 5. Open `http://localhost:3000`.
 
-The release metadata API remains available at `/api/latest-tracks`. Locally, the Express server reads Spotify credentials from `server/.env`; on Vercel, the serverless function reads them from the project Environment Variables.
+The latest-track metadata API remains available at `/api/latest-tracks`. The Music page uses `/api/releases` to load the full Spotify discography, including singles, albums, compilations, and featured appearances. Locally, the Express server reads Spotify credentials from `server/.env`; on Vercel, the serverless function reads them from the project Environment Variables.
 
 If Spotify or its credentials are temporarily unavailable, both server implementations fall back to `data/latest-tracks.json`.
 

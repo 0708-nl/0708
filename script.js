@@ -179,7 +179,8 @@
   const catalogueCount = document.getElementById('catalogueCount');
 
   if (releaseGrid && releaseSearch && releaseSort && catalogueCount) {
-    const cards = Array.from(releaseGrid.querySelectorAll('.release-card'));
+    let cards = Array.from(releaseGrid.querySelectorAll('.release-card'));
+    let usingSavedCatalogue = false;
     const updateCatalogue = () => {
       const query = releaseSearch.value.trim().toLocaleLowerCase();
       const sort = releaseSort.value;
@@ -201,11 +202,93 @@
       catalogueCount.textContent = visibleCount === cards.length
         ? `Showing ${visibleCount} releases`
         : `Showing ${visibleCount} of ${cards.length} releases`;
+      if (usingSavedCatalogue) catalogueCount.textContent += ' · saved catalogue';
+    };
+
+    const formatReleaseDate = (date) => {
+      const [year, month, day] = String(date || '').split('-');
+      if (!month) return year || 'Release date unavailable';
+      const monthName = new Date(Date.UTC(Number(year), Number(month) - 1, 1))
+        .toLocaleString('en', { month: 'short', timeZone: 'UTC' });
+      return day ? `${Number(day)} ${monthName} ${year}` : `${monthName} ${year}`;
+    };
+
+    const renderReleases = (releases) => {
+      if (!Array.isArray(releases) || !releases.length) return;
+      const fragment = document.createDocumentFragment();
+
+      releases.forEach((release) => {
+        const card = document.createElement('article');
+        card.className = 'release-card';
+        card.dataset.date = release.releaseDate || '';
+
+        const link = document.createElement('a');
+        link.href = release.spotifyUrl || `https://open.spotify.com/album/${encodeURIComponent(release.id)}`;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        if (release.artwork?.url) {
+          const artwork = document.createElement('img');
+          artwork.src = release.artwork.url;
+          artwork.alt = `${release.title} artwork`;
+          artwork.width = 320;
+          artwork.height = 320;
+          artwork.loading = 'lazy';
+          artwork.decoding = 'async';
+          link.append(artwork);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'release-body';
+        const title = document.createElement('h3');
+        title.textContent = release.title || 'Untitled release';
+        const meta = document.createElement('p');
+        meta.className = 'release-meta';
+        const releaseKind = release.releaseType === 'single'
+          ? 'Single'
+          : release.releaseType === 'compilation'
+            ? 'Compilation'
+            : release.releaseType === 'appears_on'
+              ? 'Featured release'
+              : 'Album';
+        meta.textContent = `${(release.artists || []).join(', ')} · ${formatReleaseDate(release.releaseDate)} · ${releaseKind} · Spotify`;
+        body.append(title, meta);
+        link.append(body);
+        card.append(link);
+
+        const play = document.createElement('button');
+        play.className = 'release-preview';
+        play.type = 'button';
+        play.textContent = 'Listen on Spotify';
+        play.dataset.spotifyId = release.id;
+        play.dataset.embedType = 'album';
+        play.setAttribute('aria-label', `Listen to ${title.textContent} on Spotify`);
+        card.append(play);
+        fragment.append(card);
+      });
+
+      releaseGrid.replaceChildren(fragment);
+      cards = Array.from(releaseGrid.querySelectorAll('.release-card'));
+      updateCatalogue();
     };
 
     releaseSearch.addEventListener('input', updateCatalogue);
     releaseSort.addEventListener('change', updateCatalogue);
     updateCatalogue();
+
+    fetch('/api/releases', { headers: { Accept: 'application/json' } })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Release request failed with ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        usingSavedCatalogue = data.stale === true;
+        renderReleases(data.releases);
+      })
+      .catch(() => {
+        usingSavedCatalogue = true;
+        updateCatalogue();
+      });
 
     releaseGrid.addEventListener('click', (event) => {
       const button = event.target.closest('.release-preview');
@@ -223,7 +306,9 @@
       const player = document.createElement('iframe');
       player.className = 'release-player';
       player.title = `Spotify player for ${card.querySelector('h3').textContent}`;
-      player.src = `https://open.spotify.com/embed/track/${encodeURIComponent(button.dataset.trackId)}?utm_source=generator&theme=0`;
+      const spotifyId = button.dataset.spotifyId || button.dataset.trackId;
+      const embedType = button.dataset.embedType || 'track';
+      player.src = `https://open.spotify.com/embed/${embedType}/${encodeURIComponent(spotifyId)}?utm_source=generator&theme=0`;
       player.width = '100%';
       player.height = '152';
       player.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
