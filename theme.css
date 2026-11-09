@@ -387,10 +387,23 @@
   font-size: 0.8rem;
 }
 
+.music-page .release-preview {
+  border-color: rgba(255, 61, 46, 0.4);
+  background: rgba(255, 61, 46, 0.08);
+  color: var(--text);
+}
+
 .release-preview:hover,
 .release-preview:focus-visible {
   border-color: var(--accent);
   color: var(--accent-hot);
+}
+
+.music-page .release-preview:hover,
+.music-page .release-preview:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #080808;
 }
 
 .release-player {
@@ -407,11 +420,32 @@
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
 }
 
+.music-page .release-card {
+  border-color: rgba(255, 61, 46, 0.2);
+  background:
+    linear-gradient(115deg, rgba(255, 61, 46, 0.09), transparent 38%),
+    linear-gradient(150deg, #141211, #0c0b0b);
+  box-shadow: inset 3px 0 0 rgba(255, 61, 46, 0.8), 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.music-page .release-card img {
+  border-right: 1px solid rgba(196, 255, 69, 0.18);
+}
+
 .release-card:hover,
 .release-card:focus-within {
   transform: translateY(-2px);
   border-color: rgba(255, 61, 46, 0.48);
   background: var(--surface-hover);
+}
+
+.music-page .release-card:hover,
+.music-page .release-card:focus-within {
+  border-color: rgba(255, 61, 46, 0.72);
+  background:
+    linear-gradient(115deg, rgba(255, 61, 46, 0.15), transparent 48%),
+    linear-gradient(150deg, #191312, #100e0e);
+  box-shadow: inset 3px 0 0 var(--accent), 0 18px 42px rgba(0, 0, 0, 0.3);
 }
 
 .release-card > a {
