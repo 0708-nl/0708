@@ -336,4 +336,52 @@
     });
   }
 
+  const homeReleaseGrid = document.querySelector('.home-release-grid');
+  if (homeReleaseGrid) {
+    fetch('/api/releases', { headers: { Accept: 'application/json' } })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Release request failed with ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data.releases) || !data.releases.length) return;
+
+        const fragment = document.createDocumentFragment();
+        data.releases.slice(0, 3).forEach((release) => {
+          const card = document.createElement('article');
+          card.className = 'release-card';
+          const link = document.createElement('a');
+          link.href = release.spotifyUrl || `https://open.spotify.com/album/${encodeURIComponent(release.id)}`;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+
+          if (release.artwork?.url) {
+            const artwork = document.createElement('img');
+            artwork.src = release.artwork.url;
+            artwork.alt = `${release.title || 'Release'} artwork`;
+            artwork.width = 640;
+            artwork.height = 640;
+            artwork.loading = 'lazy';
+            artwork.decoding = 'async';
+            link.append(artwork);
+          }
+
+          const body = document.createElement('div');
+          body.className = 'release-body';
+          const title = document.createElement('h3');
+          title.textContent = release.title || 'Untitled release';
+          const meta = document.createElement('p');
+          meta.className = 'release-meta';
+          meta.textContent = `${(release.artists || []).join(', ')} · ${String(release.releaseDate || '').slice(0, 4)} · Spotify`;
+          body.append(title, meta);
+          link.append(body);
+          card.append(link);
+          fragment.append(card);
+        });
+
+        homeReleaseGrid.replaceChildren(fragment);
+      })
+      .catch(() => {});
+  }
+
 })();

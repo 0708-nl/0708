@@ -4,8 +4,8 @@
   "description": "Official website for 0708, an underground hard techno and hardcore artist.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#050505",
-  "theme_color": "#050505",
+  "background_color": "#090909",
+  "theme_color": "#090909",
   "icons": [
     {
       "src": "favicon.svg",
