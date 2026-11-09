@@ -173,4 +173,66 @@
     });
   }
 
+  const releaseGrid = document.getElementById('releaseGrid');
+  const releaseSearch = document.getElementById('releaseSearch');
+  const releaseSort = document.getElementById('releaseSort');
+  const catalogueCount = document.getElementById('catalogueCount');
+
+  if (releaseGrid && releaseSearch && releaseSort && catalogueCount) {
+    const cards = Array.from(releaseGrid.querySelectorAll('.release-card'));
+    const updateCatalogue = () => {
+      const query = releaseSearch.value.trim().toLocaleLowerCase();
+      const sort = releaseSort.value;
+      const ordered = [...cards].sort((a, b) => {
+        if (sort === 'title') {
+          return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+        }
+        const direction = sort === 'oldest' ? 1 : -1;
+        return direction * a.dataset.date.localeCompare(b.dataset.date);
+      });
+
+      ordered.forEach((card) => {
+        const searchable = `${card.querySelector('h3').textContent} ${card.querySelector('.release-meta').textContent}`.toLocaleLowerCase();
+        card.hidden = !searchable.includes(query);
+        releaseGrid.append(card);
+      });
+
+      const visibleCount = ordered.filter((card) => !card.hidden).length;
+      catalogueCount.textContent = visibleCount === cards.length
+        ? `Showing ${visibleCount} releases`
+        : `Showing ${visibleCount} of ${cards.length} releases`;
+    };
+
+    releaseSearch.addEventListener('input', updateCatalogue);
+    releaseSort.addEventListener('change', updateCatalogue);
+    updateCatalogue();
+
+    releaseGrid.addEventListener('click', (event) => {
+      const button = event.target.closest('.release-preview');
+      if (!button) return;
+
+      const card = button.closest('.release-card');
+      const existingPlayer = card.querySelector('.release-player');
+      if (existingPlayer) {
+        existingPlayer.remove();
+        button.textContent = 'Listen on Spotify';
+        button.setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      const player = document.createElement('iframe');
+      player.className = 'release-player';
+      player.title = `Spotify player for ${card.querySelector('h3').textContent}`;
+      player.src = `https://open.spotify.com/embed/track/${encodeURIComponent(button.dataset.trackId)}?utm_source=generator&theme=0`;
+      player.width = '100%';
+      player.height = '152';
+      player.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+      player.loading = 'lazy';
+      player.setAttribute('allowfullscreen', '');
+      card.append(player);
+      button.textContent = 'Close player';
+      button.setAttribute('aria-expanded', 'true');
+    });
+  }
+
 })();

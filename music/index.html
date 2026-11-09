@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;family=IBM+Plex+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css?v=7" />
-    <link rel="stylesheet" href="/theme.css?v=7" />
+    <link rel="stylesheet" href="/styles.css?v=8" />
+    <link rel="stylesheet" href="/theme.css?v=8" />
   </head>
   <body class="music-page">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -40,6 +40,7 @@
 
         <p class="about-text">The complete 0708 release catalogue currently available on the site. Select a release to listen on Spotify.</p>
 
+<<<<<<< Updated upstream
         <div class="release-grid">
           <article class="release-card">
             <a href="https://open.spotify.com/album/1kb0quTK8lTb16NUc5fwKb?si=qZPL6BbVRnKX8q1YxnAKyg" target="_blank" rel="noopener noreferrer">
@@ -82,6 +83,22 @@
           </article>
 
           <article class="release-card">
+=======
+        <div class="catalogue-controls" role="search">
+          <label class="catalogue-search-label" for="releaseSearch">Find a release</label>
+          <input id="releaseSearch" class="catalogue-search" type="search" placeholder="Search titles or artists" autocomplete="off">
+          <label class="catalogue-sort-label" for="releaseSort">Sort</label>
+          <select id="releaseSort" class="catalogue-sort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">Title A–Z</option>
+          </select>
+          <p class="catalogue-count" id="catalogueCount" aria-live="polite">Showing 5 releases</p>
+        </div>
+
+        <div class="release-grid" id="releaseGrid">
+          <article class="release-card" data-date="2026-07-09">
+>>>>>>> Stashed changes
             <a href="https://open.spotify.com/track/5FXx35SqfEJkRvsym6VTnC" target="_blank" rel="noopener noreferrer">
               <img src="https://i.scdn.co/image/ab67616d0000b2737383c8527275c1cb68fdd93b" alt="CRISTAL artwork" width="320" height="320" loading="lazy" decoding="async">
               <div class="release-body">
@@ -89,9 +106,10 @@
                 <p class="release-meta">0708, Johan Derksen — 9 Jul 2026 — Spotify</p>
               </div>
             </a>
+            <button class="release-preview" type="button" data-track-id="5FXx35SqfEJkRvsym6VTnC" aria-label="Listen to CRISTAL on Spotify">Listen on Spotify</button>
           </article>
 
-          <article class="release-card">
+          <article class="release-card" data-date="2026-07-08">
             <a href="https://open.spotify.com/track/2Ak2jeZF4KCEm3JsYmTah2" target="_blank" rel="noopener noreferrer">
               <img src="https://i.scdn.co/image/ab67616d0000b273e91df93c466a3d560a8817d9" alt="GOD DOES NOT EXIST artwork" width="320" height="320" loading="lazy" decoding="async">
               <div class="release-body">
@@ -99,9 +117,10 @@
                 <p class="release-meta">0708, Johan Derksen — 8 Jul 2026 — Spotify</p>
               </div>
             </a>
+            <button class="release-preview" type="button" data-track-id="2Ak2jeZF4KCEm3JsYmTah2" aria-label="Listen to GOD DOES NOT EXIST on Spotify">Listen on Spotify</button>
           </article>
 
-          <article class="release-card">
+          <article class="release-card" data-date="2026-07-07">
             <a href="https://open.spotify.com/track/4f10MdERFl9XAvhnOByIlP" target="_blank" rel="noopener noreferrer">
               <img src="https://i.scdn.co/image/ab67616d0000b273955426a22a25c65c9ed0b0b9" alt="sacrefice artwork" width="320" height="320" loading="lazy" decoding="async">
               <div class="release-body">
@@ -109,9 +128,10 @@
                 <p class="release-meta">0708, Johan Derksen — 7 Jul 2026 — Spotify</p>
               </div>
             </a>
+            <button class="release-preview" type="button" data-track-id="4f10MdERFl9XAvhnOByIlP" aria-label="Listen to sacrefice on Spotify">Listen on Spotify</button>
           </article>
 
-          <article class="release-card">
+          <article class="release-card" data-date="2026-07-04">
             <a href="https://open.spotify.com/track/1frEKMILVyyxiTs4B2e8ep" target="_blank" rel="noopener noreferrer">
               <img src="https://i.scdn.co/image/ab67616d0000b273b580262f691dbba80ccc3ca1" alt="i could have saved u artwork" width="320" height="320" loading="lazy" decoding="async">
               <div class="release-body">
@@ -119,9 +139,10 @@
                 <p class="release-meta">0708, Johan Derksen — 4 Jul 2026</p>
               </div>
             </a>
+            <button class="release-preview" type="button" data-track-id="1frEKMILVyyxiTs4B2e8ep" aria-label="Listen to i could have saved u on Spotify">Listen on Spotify</button>
           </article>
 
-          <article class="release-card">
+          <article class="release-card" data-date="2026-07-02">
             <a href="https://open.spotify.com/track/3xbnoInKBonrf6dsZFZE4P" target="_blank" rel="noopener noreferrer">
               <img src="https://i.scdn.co/image/ab67616d0000b273ecf84c473d2ce7341dbf5016" alt="CONCRETE PULSE artwork" width="320" height="320" loading="lazy" decoding="async">
               <div class="release-body">
@@ -129,6 +150,7 @@
                 <p class="release-meta">0708, sem wilting — 2 Jul 2026</p>
               </div>
             </a>
+            <button class="release-preview" type="button" data-track-id="3xbnoInKBonrf6dsZFZE4P" aria-label="Listen to CONCRETE PULSE on Spotify">Listen on Spotify</button>
           </article>
 
         </div>
@@ -150,6 +172,6 @@
       <p class="footer-meta">© 2026 0708. All rights reserved.</p>
     </footer>
 
-    <script src="/script.js?v=7"></script>
+    <script src="/script.js?v=8"></script>
   </body>
 </html>
