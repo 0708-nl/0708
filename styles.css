@@ -1327,6 +1327,24 @@ select:focus-visible {
   }
 }
 
+/* Keep the homepage introduction aligned with the content below it. */
+.home-page .about {
+  width: 100%;
+  max-width: 58rem;
+  margin-left: 0;
+}
+
+.home-page .about .section-heading {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.home-page .about .about-text {
+  max-width: 58rem;
+  margin-inline: 0;
+  text-align: left;
+}
+
 /* Clean editorial redesign */
 :root {
   --bg: #090909;
