@@ -307,8 +307,6 @@ app.post('/api/contact', async (req, res) => {
     }
 
     const missingEnquiryDetails =
-      (enquiryType === 'booking' &&
-        (!organisation || !eventName || !eventDate || !venue || !cityCountry || !capacity)) ||
       (enquiryType === 'collab' && (!projectName || !projectType)) ||
       (enquiryType === 'press' && !organisation) ||
       (enquiryType === 'other' && !subject);

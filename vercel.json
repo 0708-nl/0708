@@ -3,12 +3,12 @@
   "redirects": [
     {
       "source": "/bio",
-      "destination": "https://guns.lol/0708",
+      "destination": "https://0708.nl/about/",
       "permanent": true
     },
     {
       "source": "/bio/",
-      "destination": "https://guns.lol/0708",
+      "destination": "https://0708.nl/about/",
       "permanent": true
     }
   ],

@@ -88,8 +88,6 @@ export async function POST(request) {
     }
 
     const missingEnquiryDetails =
-      (enquiryType === 'booking' &&
-        (!organisation || !eventName || !eventDate || !venue || !cityCountry || !capacity)) ||
       (enquiryType === 'collab' && (!projectName || !projectType)) ||
       (enquiryType === 'press' && !organisation) ||
       (enquiryType === 'other' && !subject);
