@@ -12,7 +12,7 @@
   --border: rgba(255, 255, 255, 0.12);
   --border-strong: rgba(255, 255, 255, 0.22);
   --content: 1180px;
-  --radius: 22px;
+  --radius: 24px;
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
 }
 
@@ -1358,7 +1358,7 @@ select:focus-visible {
   --acid: #f4f1ea;
   --border: rgba(255, 255, 255, 0.11);
   --border-strong: rgba(255, 255, 255, 0.2);
-  --radius: 12px;
+  --radius: 24px;
   --shadow: none;
 }
 
@@ -1377,6 +1377,7 @@ body::before {
 }
 
 .site-header {
+  width: min(calc(100% - 2.5rem), var(--content));
   top: 0.75rem;
   min-height: 58px;
   padding: 0.55rem 0.65rem 0.55rem 1rem;

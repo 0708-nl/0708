@@ -657,3 +657,251 @@
     grid-column: 1;
   }
 }
+
+/* Softer shared surfaces and aligned content edges. */
+:root {
+  --radius: 24px;
+  --radius-control: 14px;
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+}
+
+main,
+.site-footer,
+.site-header {
+  width: min(calc(100% - 2.5rem), var(--content));
+}
+
+.site-header {
+  border-radius: 22px;
+}
+
+.site-nav a,
+.nav-toggle {
+  border-radius: 14px;
+}
+
+.hero-visual,
+.home-page .hero-visual {
+  border-radius: 28px;
+}
+
+.home-page .hero-visual-label {
+  border-radius: 999px;
+}
+
+.feature-grid {
+  gap: 1rem;
+  border: 0;
+}
+
+.feature-card,
+.feature-card + .feature-card {
+  min-height: 220px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+  box-shadow: var(--shadow);
+}
+
+.feature-card + .feature-card {
+  padding-left: 1.5rem;
+}
+
+.feature-card:hover,
+.feature-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(240, 75, 50, 0.5);
+  background: var(--surface-hover);
+}
+
+.home-page .more-from .about-text {
+  max-width: 58rem;
+  margin: 0 0 1.25rem;
+}
+
+.home-page .more-from .feature-card {
+  grid-column: span 6;
+}
+
+.home-page .home-release-grid .release-card,
+.release-card {
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.home-page .home-release-grid .release-card {
+  background: var(--surface);
+}
+
+.release-card > a {
+  height: auto;
+}
+
+.release-preview {
+  min-height: 42px;
+  margin: 0.25rem 1rem 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+}
+
+.release-player {
+  width: calc(100% - 2rem);
+  margin: 0 1rem 1rem;
+  border-radius: 16px;
+}
+
+.music-page .release-card img {
+  border-right: 0;
+}
+
+.catalogue-search,
+.catalogue-sort,
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  border-radius: var(--radius-control);
+}
+
+.catalogue-search,
+.catalogue-sort {
+  min-height: 3.1rem;
+  padding-inline: 1rem;
+  border-color: var(--border);
+}
+
+.popular-tracks-view {
+  border-radius: var(--radius);
+}
+
+.popular-tracks-view iframe {
+  border-radius: 18px;
+}
+
+.page-card > .section-heading {
+  align-items: center;
+  text-align: center;
+}
+
+.about-grid {
+  align-items: stretch;
+  gap: 1.25rem;
+}
+
+.profile-card,
+.content-card {
+  border-radius: var(--radius);
+}
+
+.profile-spotlight {
+  border-radius: 18px;
+}
+
+.content-card {
+  display: flex;
+  align-items: center;
+}
+
+.landing-copy .about-text {
+  border-radius: 18px;
+}
+
+.contact-form {
+  border-radius: var(--radius);
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  width: 100%;
+  min-height: 3.15rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-strong);
+  background: #0d0d0d;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.contact-form textarea {
+  min-height: 9rem;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  border-color: var(--accent-hot);
+  outline: 0;
+}
+
+.contact-form button {
+  min-height: 3.2rem;
+  border-radius: 999px;
+}
+
+.contact-details {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.enquiry-fields {
+  padding: 1.25rem 0 0;
+}
+
+.footer-links {
+  gap: 0.5rem;
+}
+
+.footer-links a {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 800px) {
+  main,
+  .site-footer,
+  .site-header {
+    width: min(calc(100% - 2rem), var(--content));
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    border-radius: 18px;
+  }
+
+  .home-page .more-from .feature-card {
+    grid-column: 1 / -1;
+  }
+
+  .feature-card,
+  .feature-card + .feature-card {
+    min-height: 190px;
+    padding: 1.25rem;
+  }
+
+  .feature-card + .feature-card {
+    padding-left: 1.25rem;
+  }
+
+  .contact-details {
+    padding: 1rem;
+  }
+
+  .release-preview,
+  .release-player {
+    margin-inline: 0.75rem;
+  }
+
+  .release-player {
+    width: calc(100% - 1.5rem);
+  }
+}
