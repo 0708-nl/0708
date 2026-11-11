@@ -28,7 +28,6 @@ try {
 
 const { GET: latestTracks } = await import('../api/latest-tracks.mjs');
 const { GET: allReleases } = await import('../api/releases.mjs');
-const { POST: submitContact } = await import('../api/contact.mjs');
 
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -50,17 +49,6 @@ async function sendWebResponse(response, res) {
   res.end(Buffer.from(await response.arrayBuffer()));
 }
 
-async function toWebRequest(req) {
-  const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
-  const body = chunks.length ? Buffer.concat(chunks) : undefined;
-  return new Request(`http://localhost:${port}${req.url}`, {
-    method: req.method,
-    headers: req.headers,
-    body
-  });
-}
-
 createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://localhost:${port}`);
@@ -76,11 +64,6 @@ createServer(async (req, res) => {
 
     if (url.pathname === '/api/releases' && req.method === 'GET') {
       await sendWebResponse(await allReleases(), res);
-      return;
-    }
-
-    if (url.pathname === '/api/contact' && req.method === 'POST') {
-      await sendWebResponse(await submitContact(await toWebRequest(req)), res);
       return;
     }
 

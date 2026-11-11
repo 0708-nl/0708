@@ -35,16 +35,7 @@ const albumCache = new Map(); // trackId -> { payload, expiresAt }
 const ALBUM_CACHE_TTL = 24 * 60 * 60 * 1000; // 24h
 let latestTracksCache = { tracks: null, expiresAt: 0, stale: false };
 const LATEST_TRACKS_CACHE_TTL = 15 * 60 * 1000; // 15 minutes
-const ENQUIRY_TYPES = new Set(['booking', 'press', 'collab', 'other']);
 const HTTP_TIMEOUT = 10_000;
-
-function clean(value, maxLength) {
-  return String(value || '').trim().slice(0, maxLength);
-}
-
-function isEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
 
 async function fetchAccessToken() {
   if (!CLIENT_ID || !CLIENT_SECRET) {
@@ -272,96 +263,6 @@ app.get('/api/releases', async (_req, res) => {
   } catch (error) {
     console.error('Spotify releases route failed', error.message);
     res.status(502).json({ error: 'Could not load Spotify releases' });
-  }
-});
-
-// Proxy contact form submissions to FormSubmit (server-side forwarding avoids CORS issues)
-app.post('/api/contact', async (req, res) => {
-  try {
-    const formData = req.body || {};
-
-    // Honeypot: silently accept bot submissions
-    if (String(formData.hp || '').trim()) {
-      return res.json({ ok: true });
-    }
-
-    const name = clean(formData.name, 120);
-    const email = clean(formData.email, 254);
-    const enquiryType = clean(formData.enquiryType, 60);
-    const message = clean(formData.message, 5_000);
-    const organisation = clean(formData.organisation, 200);
-    const eventName = clean(formData.eventName, 200);
-    const eventDate = clean(formData.eventDate, 50);
-    const venue = clean(formData.venue, 200);
-    const cityCountry = clean(formData.cityCountry, 200);
-    const capacity = clean(formData.capacity, 20);
-    const projectName = clean(formData.projectName, 200);
-    const projectType = clean(formData.projectType, 60);
-    const subject = clean(formData.subject, 200);
-
-    if (!name || !isEmail(email) || !ENQUIRY_TYPES.has(enquiryType) || !message) {
-      return res.status(400).json({
-        ok: false,
-        error: 'Please complete required fields with a valid email address'
-      });
-    }
-
-    const missingEnquiryDetails =
-      (enquiryType === 'collab' && (!projectName || !projectType)) ||
-      (enquiryType === 'press' && !organisation) ||
-      (enquiryType === 'other' && !subject);
-
-    if (missingEnquiryDetails) {
-      return res.status(400).json({
-        ok: false,
-        error: 'Please complete the required enquiry details'
-      });
-    }
-
-    const payload = {
-      name,
-      email,
-      enquiryType,
-      organisation,
-      eventName,
-      eventDate,
-      venue,
-      cityCountry,
-      capacity,
-      budget: clean(formData.budget, 200),
-      projectName,
-      projectType,
-      deadline: clean(formData.deadline, 50),
-      subject,
-      message,
-      _subject: `0708 website: ${enquiryType}`,
-      _template: 'table',
-      _captcha: 'false'
-    };
-    const params = new URLSearchParams();
-    Object.entries(payload).forEach(([key, value]) => {
-      params.append(key, value);
-    });
-
-    const response = await axios.post(
-      'https://formsubmit.co/ajax/contact@0708.nl',
-      params.toString(),
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        timeout: HTTP_TIMEOUT,
-        validateStatus: (responseStatus) => responseStatus >= 200 && responseStatus < 300
-      }
-    );
-
-    // FormSubmit often responds with a redirect — treat 200-399 as success
-    res.json({ ok: true, status: response.status });
-  } catch (err) {
-    console.error('Contact proxy error', err?.response?.data || err.message);
-    const status = err.response?.status || 500;
-    res.status(status).json({ ok: false, error: 'Failed to forward contact' });
   }
 });
 

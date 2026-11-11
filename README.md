@@ -1,10 +1,10 @@
 # 0708 website
 
-Responsive artist website with native Vercel Functions for Spotify metadata and contact-form delivery. A standalone Express server remains available for local development or non-Vercel hosting.
+Responsive artist website with native Vercel Functions for Spotify metadata. A standalone Express server remains available for local development or non-Vercel hosting.
 
 ## Deploy on Vercel
 
-Vercel automatically deploys the files in `api/` as `/api/latest-tracks`, `/api/releases`, and `/api/contact`.
+Vercel automatically deploys the files in `api/` as `/api/latest-tracks` and `/api/releases`.
 
 Before redeploying, add these Environment Variables in **Vercel Project > Settings > Environment Variables** for Production (and Preview if needed):
 
@@ -13,7 +13,7 @@ Before redeploying, add these Environment Variables in **Vercel Project > Settin
 - `SPOTIFY_ARTIST_ID` (optional; defaults to 0708)
 - `SPOTIFY_MARKET` (optional; defaults to `NL`)
 
-After adding or changing environment variables, redeploy the latest deployment. The browser never receives the client secret.
+The Contact page uses a direct email link and does not send messages through a form service.
 
 ## Run locally
 
@@ -34,11 +34,7 @@ If Spotify or its credentials are temporarily unavailable, both server implement
 - Contact page: `contact/index.html`
 - Colors and layout: `styles.css`
 - Secondary-page layout: `theme.css`
-- Navigation, contact form, and Spotify-card behavior: `script.js`
-
-## Contact form
-
-The form posts to `/api/contact`, which validates the message and forwards it to FormSubmit. If that API is unavailable, the browser submits directly to FormSubmit instead. FormSubmit may require a one-time email activation for `contact@0708.nl`.
+- Navigation and Spotify-card behavior: `script.js`
 
 Never commit the real `.env` file or Spotify client secret.
 
