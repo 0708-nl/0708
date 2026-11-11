@@ -180,6 +180,29 @@
   const popularTracksView = document.getElementById('popularTracksView');
   const popularTracksEmbed = document.getElementById('popularTracksEmbed');
 
+  const createReleaseListenLinks = (release) => {
+    const title = release.title || 'release';
+    const query = encodeURIComponent(`${(release.artists || []).join(' ')} ${title}`.trim());
+    const spotifyUrl = release.spotifyUrl || `https://open.spotify.com/album/${encodeURIComponent(release.id)}`;
+    const links = [
+      ['Play on Spotify', spotifyUrl],
+      ['Play on Apple Music', `https://music.apple.com/us/search?term=${query}`],
+      ['Play on SoundCloud', `https://soundcloud.com/search?q=${query}`]
+    ];
+    const nav = document.createElement('nav');
+    nav.className = 'release-listen-links';
+    nav.setAttribute('aria-label', `Listen to ${title}`);
+    links.forEach(([label, href]) => {
+      const link = document.createElement('a');
+      link.href = href;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = label;
+      nav.append(link);
+    });
+    return nav;
+  };
+
   if (releaseGrid && releaseSearch && releaseSort && catalogueCount && popularTracksView && popularTracksEmbed) {
     let cards = Array.from(releaseGrid.querySelectorAll('.release-card'));
     let usingSavedCatalogue = false;
@@ -271,6 +294,7 @@
         body.append(title, meta);
         link.append(body);
         card.append(link);
+        card.append(createReleaseListenLinks(release));
 
         const play = document.createElement('button');
         play.className = 'release-preview';
@@ -376,6 +400,7 @@
           body.append(title, meta);
           link.append(body);
           card.append(link);
+          card.append(createReleaseListenLinks(release));
           fragment.append(card);
         });
 
