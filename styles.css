@@ -781,9 +781,16 @@ h3 {
 
 .contact-form label:has(textarea),
 .contact-form button,
+.human-check,
 .form-status,
 .contact-note {
   grid-column: 1 / -1;
+}
+
+.human-check {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
 }
 
 .contact-form input,

@@ -116,12 +116,47 @@
   }
 
   if (contactForm && formStatus && contactForm.dataset.ajax === 'true') {
+    const verification = { ready: false };
+    const widget = document.getElementById('turnstileWidget');
+    const loadTurnstile = async () => {
+      try {
+        const configResponse = await fetch('/api/contact', { headers: { Accept: 'application/json' } });
+        const config = await configResponse.json();
+        if (!configResponse.ok || !config.configured || !config.siteKey || !widget) throw new Error('Verification is not configured');
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+          window.turnstile.render(widget, {
+            sitekey: config.siteKey,
+            callback: () => { verification.ready = true; },
+            'expired-callback': () => { verification.ready = false; },
+            'error-callback': () => { verification.ready = false; }
+          });
+        };
+        script.onerror = () => { formStatus.textContent = 'Human verification could not load. Please refresh and try again.'; formStatus.className = 'form-status error'; };
+        document.head.appendChild(script);
+      } catch {
+        formStatus.textContent = 'Human verification is currently unavailable. Please try again later.';
+        formStatus.className = 'form-status error';
+      }
+    };
+    loadTurnstile();
+
     contactForm.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       if (!contactForm.checkValidity()) {
         contactForm.reportValidity();
         formStatus.textContent = 'Please complete every required field.';
+        formStatus.className = 'form-status error';
+        return;
+      }
+
+      const captchaToken = contactForm.querySelector('[name="cf-turnstile-response"]')?.value;
+      if (!verification.ready || !captchaToken) {
+        formStatus.textContent = 'Please complete the human verification check.';
         formStatus.className = 'form-status error';
         return;
       }
@@ -160,10 +195,9 @@
         updateEnquiryFields();
         formStatus.textContent = 'Thanks — your message was sent.';
         formStatus.className = 'form-status success';
-      } catch {
-        formStatus.textContent = 'Switching to backup form delivery…';
-        formStatus.className = 'form-status';
-        HTMLFormElement.prototype.submit.call(contactForm);
+      } catch (error) {
+        formStatus.textContent = error.message || 'Unable to send this message right now. Please try again.';
+        formStatus.className = 'form-status error';
       } finally {
         if (submitButton) {
           submitButton.disabled = false;

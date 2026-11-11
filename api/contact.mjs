@@ -1,6 +1,13 @@
 const CONTACT_ENDPOINT = 'https://formsubmit.co/ajax/contact@0708.nl';
 const MAX_BODY_SIZE = 20_000;
 const ENQUIRY_TYPES = new Set(['booking', 'press', 'collab', 'other']);
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+export function GET() {
+  const siteKey = process.env.TURNSTILE_SITE_KEY || '';
+  const configured = Boolean(siteKey && process.env.TURNSTILE_SECRET_KEY);
+  return json({ siteKey: configured ? siteKey : '', configured });
+}
 
 class RequestError extends Error {
   constructor(message, status) {
@@ -64,6 +71,22 @@ export async function POST(request) {
     // Hidden honeypot: if filled, silently succeed to deter bots.
     if (clean(body.hp, 200)) {
       return json({ ok: true });
+    }
+
+    const secret = process.env.TURNSTILE_SECRET_KEY;
+    const token = clean(body['cf-turnstile-response'], 2_048);
+    if (!secret) return json({ ok: false, error: 'Human verification is not configured yet' }, 503);
+    if (!token) return json({ ok: false, error: 'Please complete the human verification check' }, 400);
+
+    const verifyResponse = await fetch(TURNSTILE_VERIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret, response: token, ...(request.headers.get('x-forwarded-for') ? { remoteip: request.headers.get('x-forwarded-for').split(',')[0].trim() } : {}) }),
+      signal: AbortSignal.timeout(10_000)
+    });
+    const verification = await verifyResponse.json();
+    if (!verifyResponse.ok || !verification.success) {
+      return json({ ok: false, error: 'Human verification failed. Please complete the check again.' }, 400);
     }
 
     const name = clean(body.name, 120);
