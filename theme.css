@@ -269,14 +269,19 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin: 0 0 0.55rem;
+  margin: 0 1rem 0.75rem;
 }
 
 .release-listen-links a {
-  padding: 0.32rem 0.5rem;
-  border: 1px solid var(--border-strong);
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(255, 61, 46, 0.4);
+  border-radius: 999px;
+  background: rgba(255, 61, 46, 0.08);
   color: var(--text);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   line-height: 1.2;
   text-decoration: none;
 }
@@ -284,7 +289,8 @@
 .release-listen-links a:hover,
 .release-listen-links a:focus-visible {
   border-color: var(--accent);
-  color: var(--accent-hot);
+  background: var(--accent);
+  color: #080808;
 }
 
 .music-page .about-text,
