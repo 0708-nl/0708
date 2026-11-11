@@ -265,6 +265,28 @@
   line-height: 1.6;
 }
 
+.release-listen-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.55rem;
+}
+
+.release-listen-links a {
+  padding: 0.32rem 0.5rem;
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-size: 0.68rem;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.release-listen-links a:hover,
+.release-listen-links a:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent-hot);
+}
+
 .music-page .about-text,
 .privacy-page .about-text {
   margin-inline: auto;
