@@ -295,15 +295,6 @@
         link.append(body);
         card.append(link);
         card.append(createReleaseListenLinks(release));
-
-        const play = document.createElement('button');
-        play.className = 'release-preview';
-        play.type = 'button';
-        play.textContent = 'Listen on Spotify';
-        play.dataset.spotifyId = release.id;
-        play.dataset.embedType = 'album';
-        play.setAttribute('aria-label', `Listen to ${title.textContent} on Spotify`);
-        card.append(play);
         fragment.append(card);
       });
 
@@ -330,34 +321,6 @@
         updateCatalogue();
       });
 
-    releaseGrid.addEventListener('click', (event) => {
-      const button = event.target.closest('.release-preview');
-      if (!button) return;
-
-      const card = button.closest('.release-card');
-      const existingPlayer = card.querySelector('.release-player');
-      if (existingPlayer) {
-        existingPlayer.remove();
-        button.textContent = 'Listen on Spotify';
-        button.setAttribute('aria-expanded', 'false');
-        return;
-      }
-
-      const player = document.createElement('iframe');
-      player.className = 'release-player';
-      player.title = `Spotify player for ${card.querySelector('h3').textContent}`;
-      const spotifyId = button.dataset.spotifyId || button.dataset.trackId;
-      const embedType = button.dataset.embedType || 'track';
-      player.src = `https://open.spotify.com/embed/${embedType}/${encodeURIComponent(spotifyId)}?utm_source=generator&theme=0`;
-      player.width = '100%';
-      player.height = '152';
-      player.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
-      player.loading = 'lazy';
-      player.setAttribute('allowfullscreen', '');
-      card.append(player);
-      button.textContent = 'Close player';
-      button.setAttribute('aria-expanded', 'true');
-    });
   }
 
   const homeReleaseGrid = document.querySelector('.home-release-grid');
