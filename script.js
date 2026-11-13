@@ -119,7 +119,13 @@
           return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
         }
         const direction = sort === 'oldest' ? 1 : -1;
-        return direction * a.dataset.date.localeCompare(b.dataset.date);
+        const dateA = a.dataset.date;
+        const dateB = b.dataset.date;
+        if (!dateA || !dateB) {
+          if (!dateA && !dateB) return 0;
+          return dateA ? -1 : 1;
+        }
+        return direction * dateA.localeCompare(dateB);
       });
 
       ordered.forEach((card) => {
