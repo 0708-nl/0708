@@ -973,3 +973,89 @@ main,
   border-color: rgba(244, 232, 241, 0.3);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.48), 0 0 42px rgba(233, 219, 255, 0.075);
 }
+
+/* Keep the shooting particles in the page gutters, behind all homepage content. */
+.home-page main,
+.home-page .site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.particle-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle-lane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: min(20vw, max(0.5rem, calc((100vw - 1240px) / 2)));
+  overflow: hidden;
+  opacity: 0.55;
+}
+
+.particle-lane--left {
+  left: 0;
+}
+
+.particle-lane--right {
+  right: 0;
+}
+
+.particle-lane span {
+  position: absolute;
+  width: clamp(2.75rem, 5vw, 5.5rem);
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 239, 243, 0.78) 52%, rgba(255, 91, 73, 0.58));
+  box-shadow: 0 0 7px rgba(255, 115, 105, 0.2);
+  opacity: 0;
+  transform: rotate(38deg);
+  animation: gutter-shoot 13s ease-in-out infinite both;
+}
+
+.particle-lane span:nth-child(1) {
+  top: 17%;
+  left: 12%;
+  animation-delay: 0s;
+}
+
+.particle-lane span:nth-child(2) {
+  top: 53%;
+  left: 46%;
+  animation-delay: 4.3s;
+  animation-duration: 15s;
+}
+
+.particle-lane span:nth-child(3) {
+  top: 82%;
+  left: 22%;
+  animation-delay: 8.1s;
+  animation-duration: 14s;
+}
+
+@keyframes gutter-shoot {
+  0%, 72%, 100% {
+    opacity: 0;
+    transform: translate3d(-14px, -14px, 0) rotate(38deg);
+  }
+
+  76% {
+    opacity: 0.62;
+  }
+
+  88% {
+    opacity: 0;
+    transform: translate3d(24px, 30px, 0) rotate(38deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle-field {
+    display: none;
+  }
+}
