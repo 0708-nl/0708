@@ -933,3 +933,43 @@ main,
     width: calc(100% - 1.5rem);
   }
 }
+
+/* Pearlescent homepage finish, built from the existing red and lime palette. */
+.home-page {
+  background:
+    radial-gradient(ellipse at 14% 8%, rgba(255, 227, 231, 0.075), transparent 34rem),
+    radial-gradient(ellipse at 82% 24%, rgba(212, 202, 255, 0.055), transparent 30rem),
+    radial-gradient(ellipse at 72% 76%, rgba(196, 255, 69, 0.045), transparent 32rem),
+    radial-gradient(circle at 10% -5%, rgba(255, 61, 46, 0.16), transparent 29rem),
+    var(--bg);
+}
+
+.home-page .hero h1 {
+  background: linear-gradient(112deg, #fff 4%, #f0e7ed 38%, #e7e4f2 66%, #e5edcf 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 14px 46px rgba(255, 61, 46, 0.14));
+}
+
+.home-page .feature-card,
+.home-page .home-release-grid .release-card {
+  border-color: rgba(239, 232, 241, 0.14);
+  background-image:
+    linear-gradient(132deg, rgba(255, 239, 243, 0.055), transparent 38%, rgba(222, 225, 255, 0.035) 70%, rgba(196, 255, 69, 0.018)),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
+}
+
+.home-page .feature-card:hover,
+.home-page .feature-card:focus-within,
+.home-page .home-release-grid .release-card:hover {
+  border-color: rgba(255, 224, 229, 0.36);
+  background-image:
+    linear-gradient(132deg, rgba(255, 224, 229, 0.09), transparent 42%, rgba(222, 225, 255, 0.06) 72%, rgba(196, 255, 69, 0.025)),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018));
+}
+
+.home-page .hero-visual {
+  border-color: rgba(244, 232, 241, 0.3);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.48), 0 0 42px rgba(233, 219, 255, 0.075);
+}
