@@ -1233,8 +1233,6 @@ main,
 
 /* Extend the same glass treatment to the remaining page surfaces and controls. */
 .site-footer,
-.home-page .hero,
-.home-page .section,
 .home-page .hero-visual,
 .hero-index,
 .home-page .hero-visual-label,
@@ -1251,9 +1249,7 @@ main,
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(255, 255, 255, 0.025);
 }
 
-.site-footer,
-.home-page .hero,
-.home-page .section {
+.site-footer {
   border: 1px solid rgba(244, 237, 245, 0.17);
   border-radius: var(--radius);
   background-color: rgba(17, 16, 19, 0.42);
@@ -1263,10 +1259,6 @@ main,
 .site-footer {
   margin-bottom: 1.25rem;
   padding-inline: clamp(1.25rem, 4vw, 2.5rem);
-}
-
-.home-page .section {
-  padding: clamp(2rem, 4vw, 3.5rem);
 }
 
 .home-page .hero-visual {
