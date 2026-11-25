@@ -1018,6 +1018,19 @@ main,
   animation: gutter-travel 13s linear infinite both, gutter-fade 13s ease-in-out infinite both;
 }
 
+.particle-lane span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff 0 12%, #ffd3cb 24%, #ff856f 48%, #ff5b49 76%);
+  box-shadow: 0 0 5px rgba(255, 195, 183, 0.9), 0 0 12px rgba(255, 91, 73, 0.8);
+  transform: translate(35%, -50%);
+}
+
 .particle-lane span:nth-child(1) {
   top: 17%;
   left: 12%;
