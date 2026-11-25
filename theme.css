@@ -1015,7 +1015,7 @@ main,
   box-shadow: 0 0 12px rgba(255, 115, 105, 0.42), 0 0 22px rgba(255, 61, 46, 0.2);
   opacity: 0;
   transform: rotate(38deg);
-  animation: gutter-shoot 13s ease-in-out infinite both;
+  animation: gutter-travel 13s linear infinite both, gutter-fade 13s ease-in-out infinite both;
 }
 
 .particle-lane span:nth-child(1) {
@@ -1080,45 +1080,47 @@ main,
   animation-duration: 16.5s;
 }
 
-@keyframes gutter-shoot {
+@keyframes gutter-travel {
+  0%, 58% {
+    transform: translate3d(-28px, -32px, 0) rotate(38deg);
+  }
+
+  96%, 100% {
+    transform: translate3d(30px, 35px, 0) rotate(38deg);
+  }
+}
+
+@keyframes gutter-fade {
   0%, 58%, 100% {
     opacity: 0;
-    transform: translate3d(-28px, -32px, 0) rotate(38deg);
   }
 
   63% {
     opacity: 0.06;
-    transform: translate3d(-22px, -26px, 0) rotate(38deg);
   }
 
   69% {
     opacity: 0.32;
-    transform: translate3d(-11px, -13px, 0) rotate(38deg);
   }
 
   72% {
     opacity: 0.55;
-    transform: translate3d(-4px, -5px, 0) rotate(38deg);
   }
 
   79% {
     opacity: 1;
-    transform: translate3d(8px, 10px, 0) rotate(38deg);
   }
 
   87% {
     opacity: 0.72;
-    transform: translate3d(18px, 21px, 0) rotate(38deg);
   }
 
   93% {
     opacity: 0.28;
-    transform: translate3d(25px, 29px, 0) rotate(38deg);
   }
 
   96% {
     opacity: 0.08;
-    transform: translate3d(30px, 35px, 0) rotate(38deg);
   }
 }
 
