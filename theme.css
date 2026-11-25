@@ -1214,6 +1214,13 @@ main,
   -webkit-backdrop-filter: blur(14px) saturate(145%);
 }
 
+.site-nav a {
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.008));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px) saturate(135%);
+  -webkit-backdrop-filter: blur(12px) saturate(135%);
+}
+
 .feature-card:hover,
 .feature-card:focus-within,
 .release-card:hover,
@@ -1222,4 +1229,76 @@ main,
 .btn-secondary:focus-visible {
   border-color: rgba(255, 223, 224, 0.42);
   box-shadow: 0 20px 52px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 22px rgba(255, 61, 46, 0.08);
+}
+
+/* Extend the same glass treatment to the remaining page surfaces and controls. */
+.site-footer,
+.home-page .hero,
+.home-page .section,
+.home-page .hero-visual,
+.hero-index,
+.home-page .hero-visual-label,
+.catalogue-search,
+.catalogue-sort,
+.release-preview,
+.release-player,
+.pill,
+.hero-meta li,
+.track-meta span {
+  border-color: rgba(244, 237, 245, 0.2);
+  backdrop-filter: blur(18px) saturate(145%);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.site-footer,
+.home-page .hero,
+.home-page .section {
+  border: 1px solid rgba(244, 237, 245, 0.17);
+  border-radius: var(--radius);
+  background-color: rgba(17, 16, 19, 0.42);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.012) 48%, rgba(255, 61, 46, 0.025));
+}
+
+.site-footer {
+  margin-bottom: 1.25rem;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.home-page .section {
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+
+.home-page .hero-visual {
+  border-color: rgba(244, 237, 245, 0.3);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 32px rgba(228, 218, 255, 0.07);
+}
+
+.home-page .hero-visual-label {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(17, 16, 19, 0.55));
+}
+
+.hero-index,
+.home-page .hero-visual-label,
+.catalogue-search,
+.catalogue-sort,
+.release-preview,
+.release-player {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.17);
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  border: 1px solid rgba(255, 218, 213, 0.38);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 55%, rgba(110, 5, 0, 0.12));
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: 0 12px 34px rgba(255, 61, 46, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.36), inset 0 -1px 0 rgba(90, 0, 0, 0.16);
+}
+
+.hero-meta li,
+.track-meta span,
+.pill {
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(196, 255, 69, 0.045));
 }
