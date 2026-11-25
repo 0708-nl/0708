@@ -1031,6 +1031,25 @@ main,
   transform: translate(35%, -50%);
 }
 
+.particle-lane span::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 43%, rgba(255, 255, 255, 0.95) 50%, transparent 57%),
+    linear-gradient(0deg, transparent 43%, rgba(255, 239, 243, 0.9) 50%, transparent 57%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 91, 73, 0.55) 32%, transparent 72%);
+  filter: drop-shadow(0 0 4px rgba(255, 239, 243, 0.8)) drop-shadow(0 0 9px rgba(255, 91, 73, 0.65));
+  opacity: 0;
+  transform: translate(50%, -50%) rotate(-38deg) scale(0.25);
+  animation: particle-glint 1.7s ease-in-out infinite;
+  animation-delay: inherit;
+}
+
 .particle-lane span:nth-child(1) {
   top: 17%;
   left: 12%;
@@ -1134,6 +1153,23 @@ main,
 
   96% {
     opacity: 0.08;
+  }
+}
+
+@keyframes particle-glint {
+  0%, 100% {
+    opacity: 0.12;
+    transform: translate(50%, -50%) rotate(-38deg) scale(0.25);
+  }
+
+  42% {
+    opacity: 0.95;
+    transform: translate(50%, -50%) rotate(-38deg) scale(0.85);
+  }
+
+  68% {
+    opacity: 0.38;
+    transform: translate(50%, -50%) rotate(-38deg) scale(0.5);
   }
 }
 
