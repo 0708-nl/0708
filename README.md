@@ -13,8 +13,6 @@ Before redeploying, add these Environment Variables in **Vercel Project > Settin
 - `SPOTIFY_ARTIST_ID` (optional; defaults to 0708)
 - `SPOTIFY_MARKET` (optional; defaults to `NL`)
 
-The Contact page uses a direct email link and does not send messages through a form service.
-
 ## Run locally
 
 1. Open a terminal in `server`.
@@ -31,7 +29,6 @@ If Spotify or its credentials are temporarily unavailable, both server implement
 
 - Main page content: `index.html`
 - Bio page: `bio/index.html`
-- Contact page: `contact/index.html`
 - Colors and layout: `styles.css`
 - Secondary-page layout: `theme.css`
 - Navigation and Spotify-card behavior: `script.js`
