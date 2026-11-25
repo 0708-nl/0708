@@ -995,7 +995,7 @@ main,
   bottom: 0;
   width: min(20vw, max(0.5rem, calc((100vw - 1240px) / 2)));
   overflow: hidden;
-  opacity: 0.55;
+  opacity: 0.82;
 }
 
 .particle-lane--left {
@@ -1009,10 +1009,10 @@ main,
 .particle-lane span {
   position: absolute;
   width: clamp(2.75rem, 5vw, 5.5rem);
-  height: 1px;
+  height: 1.5px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(255, 239, 243, 0.78) 52%, rgba(255, 91, 73, 0.58));
-  box-shadow: 0 0 7px rgba(255, 115, 105, 0.2);
+  background: linear-gradient(90deg, transparent, rgba(255, 247, 249, 0.95) 48%, rgba(255, 91, 73, 0.8));
+  box-shadow: 0 0 10px rgba(255, 115, 105, 0.36);
   opacity: 0;
   transform: rotate(38deg);
   animation: gutter-shoot 13s ease-in-out infinite both;
@@ -1038,17 +1038,38 @@ main,
   animation-duration: 14s;
 }
 
+.particle-lane span:nth-child(4) {
+  top: 34%;
+  left: 68%;
+  animation-delay: 2.2s;
+  animation-duration: 16s;
+}
+
+.particle-lane span:nth-child(5) {
+  top: 68%;
+  left: 8%;
+  animation-delay: 6.1s;
+  animation-duration: 12s;
+}
+
+.particle-lane span:nth-child(6) {
+  top: 93%;
+  left: 54%;
+  animation-delay: 10s;
+  animation-duration: 17s;
+}
+
 @keyframes gutter-shoot {
-  0%, 72%, 100% {
+  0%, 65%, 100% {
     opacity: 0;
     transform: translate3d(-14px, -14px, 0) rotate(38deg);
   }
 
-  76% {
-    opacity: 0.62;
+  72% {
+    opacity: 0.9;
   }
 
-  88% {
+  91% {
     opacity: 0;
     transform: translate3d(24px, 30px, 0) rotate(38deg);
   }
