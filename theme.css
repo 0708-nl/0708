@@ -1059,6 +1059,27 @@ main,
   animation-duration: 17s;
 }
 
+.particle-lane span:nth-child(7) {
+  top: 8%;
+  left: 72%;
+  animation-delay: 1.4s;
+  animation-duration: 14s;
+}
+
+.particle-lane span:nth-child(8) {
+  top: 43%;
+  left: 30%;
+  animation-delay: 5.6s;
+  animation-duration: 12.5s;
+}
+
+.particle-lane span:nth-child(9) {
+  top: 75%;
+  left: 62%;
+  animation-delay: 9.3s;
+  animation-duration: 16.5s;
+}
+
 @keyframes gutter-shoot {
   0%, 65%, 100% {
     opacity: 0;
